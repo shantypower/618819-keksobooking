@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Анастасия Назарова](https://up.htmlacademy.ru/javascript/14/user/618819).
-* Наставник: `Неизвестно`.
+* Наставник: [Мурат Баркинхоев](https://up.htmlacademy.ru/javascript/14/user/186857).
 
 ---
 
