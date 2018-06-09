@@ -9,23 +9,24 @@ var getRandomArrayElement = function (arr) {
   var randomElementIndex = getRandomNumber(0, arr.length - 1);
   return arr[randomElementIndex];
 };
-/*
-var getUniqueArrayElement = function (arr) {
-  var uniqueArrayElement = getRandomArrayElement(arr);
-  arr.slice
-}
-console.log(getUniqueArrayElement(offerTitles));*/
 
-var getRandomArray = function() {
-
+var getUniqueArrayElement = function (array) {
+  return array.splice(getRandomNumber(0, array.length - 1), 1).toString();
 };
 
-var getShuffledArray = function {
-
+var getRandomArray = function (array) {
+  var sourceArray = getShuffledArray(array);
+  var randomArray = [];
+  var randomLength = getRandomNumber(1, (array.length - 1));
+  for (var i = 0; i <= randomLength; i++) {
+    randomArray[i] = sourceArray[i];
+  }
+  return randomArray;
 };
 
 
 var NUMBER_OF_ADVERTS = 8;
+var AVATARS = ['01', '02', '03', '04', '05', '06', '07', '08'];
 var OFFER_TITLES = ['Большая уютная квартира', 'Маленькая неуютная квартира', 'Огромный прекрасный дворец', 'Маленький ужасный дворец', 'Красивый гостевой домик', 'Некрасивый негостеприимный домик', 'Уютное бунгало далеко от моря', 'Неуютное бунгало по колено в воде']; //Значения не должны повторяться.
 var OFFER_TYPES = ['palace', 'flat', 'house', 'bungalo'];
 var OFFER_CHECKS = ['12:00', '13:00', '14:00'];
@@ -33,15 +34,27 @@ var OFFER_CHECKS = ['12:00', '13:00', '14:00'];
 var OFFER_FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner']; //массив строк случайной длины из предложенных
 var OFFER_PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
 
-var getSimilarOffer = function() {
+
+var getShuffledArray = function (arr) {
+
+  for (var i = 0; i < arr.length; i++) {
+    var j = getRandomNumber(0, arr.length - 1);
+    var tmp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = tmp;
+  }
+  return arr;
+};
+
+var getSimilarOffer = function () {
   var locationX = getRandomNumber(300, 900);
   var locationY = getRandomNumber(130, 630);
   var advert = {
     author: {
-      avatar: 'img/avatars/user' + '0' + getRandomNumber(0, 8) + '.png'
+      avatar: 'img/avatars/user' + '0' + getUniqueArrayElement(AVATARS) + '.png'
     },
     offer: {
-    //  title: getUniqueArrayElement(OFFER_TITLES),
+      title: getUniqueArrayElement(OFFER_TITLES),
       address: locationX + ', ' + locationY,
       price: getRandomNumber(1000, 1000000),
       type: getRandomArrayElement(OFFER_TYPES),
@@ -49,9 +62,9 @@ var getSimilarOffer = function() {
       guests: getRandomNumber(1, 10),
       checkin: getRandomArrayElement(OFFER_CHECKS),
       checkout: getRandomArrayElement(OFFER_CHECKS),
-    //  features: getRandomArray(OFFER_FEATURES),
+      features: getRandomArray(OFFER_FEATURES),
       description: '',
-    //  photos: getShuffledArray(OFFER_PHOTOS)
+      photos: getShuffledArray(OFFER_PHOTOS)
     },
     location: {
       x: locationX,
@@ -60,7 +73,16 @@ var getSimilarOffer = function() {
   };
   return advert;
 };
-console.log(getSimilarOffer());
+
+var getGroupOfSimilarAdverts = function (counts) {
+  var similarAdverts = [];
+  for (var i = 0; i <= counts - 1; i++) {
+    similarAdverts[i] = getSimilarOffer();
+  }
+  return similarAdverts;
+}
+
+console.log(getGroupOfSimilarAdverts(NUMBER_OF_ADVERTS));
 //Создайте массив, состоящий из 8 сгенерированных JS объектов, которые будут описывать похожие объявления неподалёку.
 /*
 
@@ -112,25 +134,6 @@ console.log(getSimilarOffer());
 24
 alert(generateArrayRandomNumber(45, 67));
  */
-/*var getSimilarOffer = function (arrAvatars, arrTitles, arrTypes, arrRooms, arrGuests, arrCheckIns, arrChecks, arrFeatures, arrPhotos) {
-  var randomName = getRandomArrayElement(arrNames) + ' ' + getRandomArrayElement(arrSurnames);
-  var randomCoat = getRandomArrayElement(arrCoats);
-  var randomEyes = getRandomArrayElement(arrEyes);
-  var wizardsImage = {};
-
-  wizardsImage.name = randomName;
-  wizardsImage.coatColor = randomCoat;
-  wizardsImage.eyesColor = randomEyes;
-  return wizardsImage;
-};
-
-var getWizardsGroup = function (arrNames, arrSurnames, arrCoats, arrEyes) {
-  var wizardsImages = [];
-  for (var i = 0; i <= 3; i++) {
-    wizardsImages[i] = getWizardsImage(arrNames, arrSurnames, arrCoats, arrEyes);
-  }
-  return wizardsImages;
-};
 
 /*
 var WIZARD_NAMES = ['Иван', 'Хуан Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
