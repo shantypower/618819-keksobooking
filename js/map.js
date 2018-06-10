@@ -47,30 +47,32 @@ var getShuffledArray = function (arr) {
 };
 
 var getSimilarOffer = function () {
-  var locationX = getRandomNumber(300, 900);
-  var locationY = getRandomNumber(130, 630);
-  var advert = {
-    author: {
-      avatar: 'img/avatars/user' + '0' + getUniqueArrayElement(AVATARS) + '.png'
-    },
-    offer: {
-      title: getUniqueArrayElement(OFFER_TITLES),
-      address: locationX + ', ' + locationY,
-      price: getRandomNumber(1000, 1000000),
-      type: getRandomArrayElement(OFFER_TYPES),
-      rooms: getRandomNumber(1, 5),
-      guests: getRandomNumber(1, 10),
-      checkin: getRandomArrayElement(OFFER_CHECKS),
-      checkout: getRandomArrayElement(OFFER_CHECKS),
-      features: getRandomArray(OFFER_FEATURES),
-      description: '',
-      photos: getShuffledArray(OFFER_PHOTOS)
-    },
-    location: {
-      x: locationX,
-      y: locationY
-    }
-  };
+  var advert = {};
+
+  var author = {};
+  author.avatar = 'img/avatars/user' + getUniqueArrayElement(AVATARS) + '.png';
+
+  var location = {};
+  location.x = getRandomNumber(300, 900);
+  location.y = getRandomNumber(130, 630);
+
+  var offer = {};
+  offer.title = getUniqueArrayElement(OFFER_TITLES);
+  offer.address = location.x + ', ' + location.y;
+  offer.price = getRandomNumber(1000, 1000000);
+  offer.type = getRandomArrayElement(OFFER_TYPES);
+  offer.rooms = getRandomNumber(1, 5);
+  offer.guests = getRandomNumber(1, 10);
+  offer.checkin = getRandomArrayElement(OFFER_CHECKS);
+  offer.checkout = getRandomArrayElement(OFFER_CHECKS);
+  offer.features = getRandomArray(OFFER_FEATURES);
+  offer.description = '';
+  offer.photos = getShuffledArray(OFFER_PHOTOS);
+
+  advert.author = author;
+  advert.offer = offer;
+  advert.location = location;
+
   return advert;
 };
 
@@ -82,7 +84,31 @@ var getGroupOfSimilarAdverts = function (counts) {
   return similarAdverts;
 }
 
-console.log(getGroupOfSimilarAdverts(NUMBER_OF_ADVERTS));
+var pinsGroup = getGroupOfSimilarAdverts(NUMBER_OF_ADVERTS);
+
+var mapActive = document.querySelector('.map'); //временно делаем карту активной для тестов
+mapActive.classList.remove('map--faded');
+
+var mapPins = document.querySelector('.map__pins'); //ищем блок в разметке, куда вставлять пины
+//ищем в разметке шаблон и разметку кнопки-пина в нем
+var mapPinTemplate = document.querySelector('#map__pins').content.querySelector('.map__pin');
+//клонируем из шаблона 8 DOM-элементов в разметку без содержимого
+
+var createMapPin = function (arrAdverts) {
+  var mapPin = mapPinTemplate.cloneNode(true);
+  var pinIcon = mapPin.children[0];
+  var pinWidth = +pinIcon.getAttribute('height');
+  var pinHeight = +pinIcon.getAttribute('width');
+  mapPin.style = 'left: ' + arrAdverts.location.x + 'px; top: ' + arrAdverts.location.y + 'px';
+  pinIcon.src = arrAdverts.author.avatar;
+  pinIcon.alt = arrAdverts.offer.title;
+  return mapPin;
+};
+
+
+//заполняем новые элементы данными из сгенерированного массива объявлений
+
+
 //Создайте массив, состоящий из 8 сгенерированных JS объектов, которые будут описывать похожие объявления неподалёку.
 /*
 
@@ -136,13 +162,6 @@ alert(generateArrayRandomNumber(45, 67));
  */
 
 /*
-var WIZARD_NAMES = ['Иван', 'Хуан Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
-
-var WIZARD_SURNAMES = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
-
-var WIZARD_COATS = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
-
-var WIZARD_EYES = ['black', 'red', 'blue', 'yellow', 'green'];
 
 var userDialog = document.querySelector('.setup');
 userDialog.classList.remove('hidden');
