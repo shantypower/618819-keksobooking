@@ -18,6 +18,8 @@ var OFFER_FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'co
 var OFFER_PHOTOS = [
   'http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'
 ];
+var PIN_WIDTH = 50;
+var PIN_HEIGHT = 70;
 
 var mapActive = document.querySelector('.map');
 mapActive.classList.remove('map--faded');
@@ -100,9 +102,7 @@ var mapPinTemplate = document.querySelector('#map__card').content.querySelector(
 var createMapPin = function (arrAdverts) {
   var mapPin = mapPinTemplate.cloneNode(true);
   var pinIcon = mapPin.children[0];
-  var pinWidth = +pinIcon.getAttribute('height');
-  var pinHeight = +pinIcon.getAttribute('width');
-  mapPin.style = 'left: ' + (arrAdverts.location.x + pinWidth / 2) + 'px; top: ' + (arrAdverts.location.y + pinHeight) + 'px';
+  mapPin.style = 'left: ' + (arrAdverts.location.x + PIN_WIDTH / 2) + 'px; top: ' + (arrAdverts.location.y + PIN_HEIGHT) + 'px';
   pinIcon.src = arrAdverts.author.avatar;
   pinIcon.alt = arrAdverts.offer.title;
   return mapPin;
