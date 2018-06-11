@@ -11,11 +11,10 @@ var OFFER_TITLES = [
   'Некрасивый негостеприимный домик',
   'Уютное бунгало далеко от моря',
   'Неуютное бунгало по колено в воде'
-]; //Значения не должны повторяться.
+];
 var OFFER_TYPES = ['palace', 'flat', 'house', 'bungalo'];
 var OFFER_CHECKS = ['12:00', '13:00', '14:00'];
-//var offerCheckOuts = ['12:00', '13:00', '14:00'];
-var OFFER_FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner']; //массив строк случайной длины из предложенных
+var OFFER_FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var OFFER_PHOTOS = [
   'http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'
 ];
@@ -27,7 +26,7 @@ var getRandomNumber = function (min, max) {
   var randomNumber = Math.round(Math.random() * (max - min) + min);
 
   return randomNumber;
-}
+};
 
 var getRandomArrayElement = function (arr) {
   var randomElementIndex = getRandomNumber(0, arr.length - 1);
@@ -39,7 +38,6 @@ var getUniqueArrayElement = function (array) {
   return array.splice(getRandomNumber(0, array.length - 1), 1).toString();
 };
 
-// Генерация перемешанного массива случайной длины
 var getRandomArray = function (array) {
   var sourceArray = getShuffledArray(array);
   var randomArray = [];
@@ -51,7 +49,6 @@ var getRandomArray = function (array) {
   return randomArray;
 };
 
-//перемешивание элементов в массиве
 var getShuffledArray = function (arr) {
   for (var i = 0; i < arr.length; i++) {
     var j = getRandomNumber(0, arr.length - 1);
@@ -62,7 +59,7 @@ var getShuffledArray = function (arr) {
 
   return arr;
 };
-//генерация похожего объявления
+
 var getSimilarAdvert = function () {
   var similarAdvert = {};
 
@@ -91,14 +88,13 @@ var getSimilarAdvert = function () {
 
   return similarAdvert;
 };
-//создание массива случайных похожих объявлений
-  var similarAdverts = [];
-  for (var i = 0; i <= NUMBER_OF_ADVERTS - 1; i++) {
-    similarAdverts[i] = getSimilarAdvert();
-  }
 
-var mapPins = document.querySelector('.map__pins'); //ищем блок в разметке, куда вставлять пины
-//ищем в разметке шаблон и разметку кнопки-пина в нем
+var similarAdverts = [];
+for (var i = 0; i <= NUMBER_OF_ADVERTS - 1; i++) {
+  similarAdverts[i] = getSimilarAdvert();
+}
+
+var mapPins = document.querySelector('.map__pins');
 var mapPinTemplate = document.querySelector('#map__card').content.querySelector('.map__pin');
 
 var createMapPin = function (arrAdverts) {
@@ -112,12 +108,9 @@ var createMapPin = function (arrAdverts) {
   return mapPin;
 };
 
-//ищем блок в разметке, куда вставлять объявление
-//ищем в разметке шаблон объявления
-
 var fragment = document.createDocumentFragment();
-for (var i = 0; i < similarAdverts.length; i++) {
-  fragment.appendChild(createMapPin(similarAdverts[i]));
+for (var j = 0; j < similarAdverts.length; j++) {
+  fragment.appendChild(createMapPin(similarAdverts[j]));
 }
 mapPins.appendChild(fragment);
 
@@ -125,7 +118,7 @@ var mapCardTemplate = document.querySelector('#map__card').content.querySelector
 var map = document.querySelector('.map');
 var mapFilters = document.querySelector('.map__filters-container');
 
-var createSimilarAdvert = function (arrAdverts) {
+var createSimilarAdvert = function () {
   var mapCard = mapCardTemplate.cloneNode(true);
   var advertTitle = mapCard.querySelector('.popup__title');
   var advertAddress = mapCard.querySelector('.popup__text--address');
@@ -140,7 +133,7 @@ var createSimilarAdvert = function (arrAdverts) {
 
   advertTitle.textContent = similarAdverts[0].offer.title;
   advertAddress.textContent = similarAdverts[0].offer.address;
-  advertPrice.textContent = similarAdverts[0].offer.price + '₽/ночь.';
+  advertPrice.textContent = similarAdverts[0].offer.price + ' денежек /ночь.';
 
   switch (similarAdverts[0].offer.type) {
     case ('flat'):
@@ -163,23 +156,21 @@ var createSimilarAdvert = function (arrAdverts) {
   advertCapacity.textContent = similarAdverts[0].offer.rooms + ' комнаты для ' + similarAdverts[0].offer.guests + ' гостей';
   advertTime.textContent = 'Заезд после ' + similarAdverts[0].offer.checkin + ', выезд до ' + similarAdverts[0].offer.checkout;
 
-  for (var i = 0; i < similarAdverts[0].offer.features.length; i++) {
+  for (i = 0; i < similarAdverts[0].offer.features.length; i++) {
     advertFeatures.querySelector('.popup__feature--' + similarAdverts[0].offer.features[i]).textContent = similarAdverts[0].offer.features[i];
   }
-/*
+
   for (i = 0; i < advertFeatures.children.length; i++) {
     if (advertFeatures.children[i].textContent === '') {
       advertFeatures.removeChild(advertFeatures.children[i]);
     }
-  }*/
+  }
 
   advertDescription.textContent = similarAdverts[0].offer.description;
 
   for (i = 0; i < similarAdverts[0].offer.photos.length; i++) {
     var photo = advertPhotos.children[0].cloneNode();
-
     photo.src = similarAdverts[0].offer.photos[i];
-
     advertPhotos.appendChild(photo);
   }
 
@@ -192,25 +183,3 @@ var createSimilarAdvert = function (arrAdverts) {
 fragment.innerHtml = '';
 fragment.appendChild(createSimilarAdvert(similarAdverts[0]));
 map.insertBefore(fragment, mapFilters);
-
-/*function generateArrayRandomNumber (min, max) {
-var totalNumbers = max - min + 1,
-arrayTotalNumbers   = [],
-arrayRandomNumbers  = [],
-tempRandomNumber;
-while (totalNumbers--) {
-arrayTotalNumbers.push(totalNumbers + min);
-}
-while (arrayTotalNumbers.length) {
-tempRandomNumber = Math.round(Math.random() * (arrayTotalNumbers.length - 1));
-arrayRandomNumbers.push(arrayTotalNumbers[tempRandomNumber]);
-arrayTotalNumbers.splice(tempRandomNumber, 1);
-}
-return arrayRandomNumbers;
-
-}
-//  Нужно учесть что в диапазоне участвуют и минимальное и максимальное число
-//  тоесть если задать (0, 100) то на выходе получим массив из 101-го числа
-//  от 1 до 100 и плюс число 0
-alert(generateArrayRandomNumber(45, 67));
- */
