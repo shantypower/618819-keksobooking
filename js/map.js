@@ -20,7 +20,7 @@ var OFFER_PHOTOS = [
   'http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'
 ];
 
-var mapActive = document.querySelector('.map'); //временно делаем карту активной для тестов
+var mapActive = document.querySelector('.map');
 mapActive.classList.remove('map--faded');
 
 var getRandomNumber = function (min, max) {
@@ -63,20 +63,20 @@ var getShuffledArray = function (arr) {
   return arr;
 };
 //генерация похожего объявления
-var getSimilarOffer = function () {
-  var advert = {};
+var getSimilarAdvert = function () {
+  var similarAdvert = {};
 
   var author = {};
-  advert.author = author;
+  similarAdvert.author = author;
   author.avatar = 'img/avatars/user' + getUniqueArrayElement(AVATARS) + '.png';
 
   var location = {};
-  advert.location = location;
+  similarAdvert.location = location;
   location.x = getRandomNumber(300, 900);
   location.y = getRandomNumber(130, 630);
 
   var offer = {};
-  advert.offer = offer;
+  similarAdvert.offer = offer;
   offer.title = getUniqueArrayElement(OFFER_TITLES);
   offer.address = location.x + ', ' + location.y;
   offer.price = getRandomNumber(1000, 1000000);
@@ -89,27 +89,17 @@ var getSimilarOffer = function () {
   offer.description = '';
   offer.photos = getShuffledArray(OFFER_PHOTOS);
 
-  return advert;
+  return similarAdvert;
 };
 //создание массива случайных похожих объявлений
-var getGroupOfSimilarAdverts = function (counts) {
   var similarAdverts = [];
-  for (var i = 0; i <= counts - 1; i++) {
-    similarAdverts[i] = getSimilarOffer();
+  for (var i = 0; i <= NUMBER_OF_ADVERTS - 1; i++) {
+    similarAdverts[i] = getSimilarAdvert();
   }
-  return similarAdverts;
-}
 
-var similarAdverts = getGroupOfSimilarAdverts(NUMBER_OF_ADVERTS);
-
-
-//клонируем из шаблона 8 DOM-элементов в разметку без содержимого
 var mapPins = document.querySelector('.map__pins'); //ищем блок в разметке, куда вставлять пины
 //ищем в разметке шаблон и разметку кнопки-пина в нем
-var mapPinTemplate = document.querySelector('#map__pins').content.querySelector('.map__pin');
-var mapCard = document.querySelector('.map__card');
-var map = document.querySelector('.map');
-var mapContainer = map.querySelector('.map__filters-container');
+var mapPinTemplate = document.querySelector('#map__card').content.querySelector('.map__pin');
 
 var createMapPin = function (arrAdverts) {
   var mapPin = mapPinTemplate.cloneNode(true);
@@ -122,7 +112,7 @@ var createMapPin = function (arrAdverts) {
   return mapPin;
 };
 
- //ищем блок в разметке, куда вставлять объявление
+//ищем блок в разметке, куда вставлять объявление
 //ищем в разметке шаблон объявления
 
 var fragment = document.createDocumentFragment();
@@ -131,25 +121,28 @@ for (var i = 0; i < similarAdverts.length; i++) {
 }
 mapPins.appendChild(fragment);
 
+var mapCardTemplate = document.querySelector('#map__card').content.querySelector('.map__card');
+var map = document.querySelector('.map');
+var mapFilters = document.querySelector('.map__filters-container');
 
 var createSimilarAdvert = function (arrAdverts) {
-  var similarAdvert = mapCard.cloneNode(true);
-  var advertTitle = similarAdvert.querySelector('.popup__title');
-  var advertAddress = similarAdvert.querySelector('.popup__text--address');
-  var advertPrice = similarAdvert.querySelector('.popup__text--price');
-  var advertType = similarAdvert.querySelector('.popup__type');
-  var advertCapacity = similarAdvert.querySelector('.popup__text--capacity');
-  var advertTime = similarAdvert.querySelector('.popup__text--time');
-  var advertFeatures = similarAdvert.querySelector('.popup__features');
-  var advertDescription = similarAdvert.querySelector('.popup__description');
-  var advertPhotos = similarAdvert.querySelector('.popup__photos');
-  var advertAvatar = similarAdvert.querySelector('.popup__avatar');
+  var mapCard = mapCardTemplate.cloneNode(true);
+  var advertTitle = mapCard.querySelector('.popup__title');
+  var advertAddress = mapCard.querySelector('.popup__text--address');
+  var advertPrice = mapCard.querySelector('.popup__text--price');
+  var advertType = mapCard.querySelector('.popup__type');
+  var advertCapacity = mapCard.querySelector('.popup__text--capacity');
+  var advertTime = mapCard.querySelector('.popup__text--time');
+  var advertFeatures = mapCard.querySelector('.popup__features');
+  var advertDescription = mapCard.querySelector('.popup__description');
+  var advertPhotos = mapCard.querySelector('.popup__photos');
+  var advertAvatar = mapCard.querySelector('.popup__avatar');
 
-  advertTitle.textContent = similarAdverts.offer.title;
-  advertAddress.textContent = similarAdverts.offer.address;
-  advertPrice.textContent = similarAdverts.offer.price + '₽/ночь.';
+  advertTitle.textContent = similarAdverts[0].offer.title;
+  advertAddress.textContent = similarAdverts[0].offer.address;
+  advertPrice.textContent = similarAdverts[0].offer.price + '₽/ночь.';
 
-  switch (similarAdverts.offer.type) {
+  switch (similarAdverts[0].offer.type) {
     case ('flat'):
       advertType.textContent = 'Квартира';
       break;
@@ -167,38 +160,38 @@ var createSimilarAdvert = function (arrAdverts) {
       break;
   }
 
-  advertCapacity.textContent = similarAdverts.offer.rooms + ' комнаты для ' + similarAdverts.offer.guests + ' гостей';
-  advertTime.textContent = 'Заезд после ' + similarAdverts.offer.checkin + ', выезд до ' + similarAdverts.offer.checkout;
+  advertCapacity.textContent = similarAdverts[0].offer.rooms + ' комнаты для ' + similarAdverts[0].offer.guests + ' гостей';
+  advertTime.textContent = 'Заезд после ' + similarAdverts[0].offer.checkin + ', выезд до ' + similarAdverts[0].offer.checkout;
 
-  for (var i = 0; i < similarAdverts.offer.features.length; i++) {
-    advertFeatures.querySelector('.popup__feature--' + similarAdverts.offer.features[i]).textContent = similarAdverts.offer.features[i];
+  for (var i = 0; i < similarAdverts[0].offer.features.length; i++) {
+    advertFeatures.querySelector('.popup__feature--' + similarAdverts[0].offer.features[i]).textContent = similarAdverts[0].offer.features[i];
   }
-
+/*
   for (i = 0; i < advertFeatures.children.length; i++) {
     if (advertFeatures.children[i].textContent === '') {
       advertFeatures.removeChild(advertFeatures.children[i]);
     }
-  }
+  }*/
 
-  advertDescription.textContent = similarAdverts.offer.description;
+  advertDescription.textContent = similarAdverts[0].offer.description;
 
-  for (i = 0; i < similarAdverts.offer.photos.length; i++) {
+  for (i = 0; i < similarAdverts[0].offer.photos.length; i++) {
     var photo = advertPhotos.children[0].cloneNode();
 
-    photo.src = similarAdverts.offer.photos[i];
+    photo.src = similarAdverts[0].offer.photos[i];
 
     advertPhotos.appendChild(photo);
   }
 
   advertPhotos.removeChild(advertPhotos.children[0]);
-  advertAvatar.src = similarAdverts.author.avatar;
+  advertAvatar.src = similarAdverts[0].author.avatar;
 
-  return similarAdvert;
+  return mapCard;
 };
 
 fragment.innerHtml = '';
 fragment.appendChild(createSimilarAdvert(similarAdverts[0]));
-map.insertBefore(fragment, mapContainer);
+map.insertBefore(fragment, mapFilters);
 
 /*function generateArrayRandomNumber (min, max) {
 var totalNumbers = max - min + 1,
