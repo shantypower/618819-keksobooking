@@ -28,21 +28,30 @@ var OFFER_PHOTOS = [
 ];
 var PIN_WIDTH = 50;
 var PIN_HEIGHT = 70;
+var MAIN_PIN_WIDTH = 65;
+var MAIN_PIN_HEIGHT = 87;
 
 var mapActive = document.querySelector('.map');
 var mapPinMain = document.querySelector('.map__pin--main');
 var adForm = document.querySelector('.ad-form');
 var adFormHeader = adForm.querySelector('.ad-form-header');
 var adFormElement = adForm.querySelectorAll('.ad-form__element');
+var addressInput = adForm.querySelector('#address');
 
 adFormHeader.disabled = true;
 for (i = 0; i <= adFormElement.length - 1; i++) {
   adFormElement[i].disabled = true;
 }
 
+
 mapPinMain.addEventListener('mousedown', function() {
+
   mapActive.classList.remove('map--faded');
   adForm.classList.remove('ad-form--disabled');
+  for (i = 0; i <= adFormElement.length - 1; i++) {
+    adFormElement[i].removeAttribute('disabled');
+  }
+  addressInput.value = Math.round(parseInt(mapPinMain.style.left) + MAIN_PIN_WIDTH / 2) + ', ' + Math.round(parseInt(mapPinMain.style.top) + MAIN_PIN_HEIGHT);
 });
 
 var getRandomNumber = function (min, max) {
