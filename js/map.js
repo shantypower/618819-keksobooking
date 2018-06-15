@@ -1,4 +1,12 @@
 'use strict';
+// 1. Активировать кару при возникновении события - перетаскивание центральной метки .map__pin--main
+//Для этого нужно добавить обработчик события mouseup на элемент .map__pin--main
+// 2.Обработчик события mouseup должен вызывать функцию, которая будет отменять изменения DOM-элементов, описанные в пункте «Неактивное состояние» технического задания:
+//**Блок с картой .map содержит класс map--faded;
+//**Форма заполнения информации об объявлении .ad-form содержит класс ad-form--disabled;
+//**Поля формы .ad-form заблокированы с помощью атрибута disabled, добавленного на них или на их родительские блоки fieldset
+//в обработчике события mouseup на элементе метки, кроме вызова метода, переводящего страницу в активное состояние, должен находиться вызов метода, который устанавливает значения поля ввода адреса.
+//Нажатие на метку похожего объявления на карте, приводит к показу карточки с подробной информацией об этом объявлении. Получается, что для меток должны быть созданы обработчики событий, которые вызывают показ карточки с соответствующими данными.
 
 var NUMBER_OF_ADVERTS = 8;
 var AVATARS = ['01', '02', '03', '04', '05', '06', '07', '08'];
@@ -22,7 +30,20 @@ var PIN_WIDTH = 50;
 var PIN_HEIGHT = 70;
 
 var mapActive = document.querySelector('.map');
-mapActive.classList.remove('map--faded');
+var mapPinMain = document.querySelector('.map__pin--main');
+var adForm = document.querySelector('.ad-form');
+var adFormHeader = adForm.querySelector('.ad-form-header');
+var adFormElement = adForm.querySelectorAll('.ad-form__element');
+
+adFormHeader.disabled = true;
+for (i = 0; i <= adFormElement.length - 1; i++) {
+  adFormElement[i].disabled = true;
+}
+
+mapPinMain.addEventListener('mousedown', function() {
+  mapActive.classList.remove('map--faded');
+  adForm.classList.remove('ad-form--disabled');
+});
 
 var getRandomNumber = function (min, max) {
   var randomNumber = Math.round(Math.random() * (max - min) + min);
@@ -107,12 +128,12 @@ var createMapPin = function (arrAdverts) {
   pinIcon.alt = arrAdverts.offer.title;
   return mapPin;
 };
-
+/*
 var fragment = document.createDocumentFragment();
 for (var j = 0; j < similarAdverts.length; j++) {
   fragment.appendChild(createMapPin(similarAdverts[j]));
 }
-mapPins.appendChild(fragment);
+mapPins.appendChild(fragment);*/
 
 var mapCardTemplate = document.querySelector('#map__card').content.querySelector('.map__card');
 var map = document.querySelector('.map');
@@ -179,7 +200,7 @@ var createSimilarAdvert = function () {
 
   return mapCard;
 };
-
+/*
 fragment.innerHtml = '';
 fragment.appendChild(createSimilarAdvert(similarAdverts[0]));
-map.insertBefore(fragment, mapFilters);
+map.insertBefore(fragment, mapFilters);*/
