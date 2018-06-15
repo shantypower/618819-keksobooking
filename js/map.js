@@ -1,12 +1,12 @@
 'use strict';
 // 1. Активировать кару при возникновении события - перетаскивание центральной метки .map__pin--main
-//Для этого нужно добавить обработчик события mouseup на элемент .map__pin--main
+// Для этого нужно добавить обработчик события mouseup на элемент .map__pin--main
 // 2.Обработчик события mouseup должен вызывать функцию, которая будет отменять изменения DOM-элементов, описанные в пункте «Неактивное состояние» технического задания:
-//**Блок с картой .map содержит класс map--faded;
-//**Форма заполнения информации об объявлении .ad-form содержит класс ad-form--disabled;
-//**Поля формы .ad-form заблокированы с помощью атрибута disabled, добавленного на них или на их родительские блоки fieldset
-//в обработчике события mouseup на элементе метки, кроме вызова метода, переводящего страницу в активное состояние, должен находиться вызов метода, который устанавливает значения поля ввода адреса.
-//Нажатие на метку похожего объявления на карте, приводит к показу карточки с подробной информацией об этом объявлении. Получается, что для меток должны быть созданы обработчики событий, которые вызывают показ карточки с соответствующими данными.
+// **Блок с картой .map содержит класс map--faded;
+// **Форма заполнения информации об объявлении .ad-form содержит класс ad-form--disabled;
+// **Поля формы .ad-form заблокированы с помощью атрибута disabled, добавленного на них или на их родительские блоки fieldset
+// в обработчике события mouseup на элементе метки, кроме вызова метода, переводящего страницу в активное состояние, должен находиться вызов метода, который устанавливает значения поля ввода адреса.
+// Нажатие на метку похожего объявления на карте, приводит к показу карточки с подробной информацией об этом объявлении. Получается, что для меток должны быть созданы обработчики событий, которые вызывают показ карточки с соответствующими данными.
 
 var NUMBER_OF_ADVERTS = 8;
 var AVATARS = ['01', '02', '03', '04', '05', '06', '07', '08'];
@@ -32,27 +32,12 @@ var MAIN_PIN_WIDTH = 65;
 var MAIN_PIN_HEIGHT = 87;
 
 var mapActive = document.querySelector('.map');
+var mapPinsContainer = document.querySelector('.map__pins');
 var mapPinMain = document.querySelector('.map__pin--main');
 var adForm = document.querySelector('.ad-form');
 var adFormHeader = adForm.querySelector('.ad-form-header');
 var adFormElement = adForm.querySelectorAll('.ad-form__element');
 var addressInput = adForm.querySelector('#address');
-
-adFormHeader.disabled = true;
-for (i = 0; i <= adFormElement.length - 1; i++) {
-  adFormElement[i].disabled = true;
-}
-
-
-mapPinMain.addEventListener('mousedown', function() {
-
-  mapActive.classList.remove('map--faded');
-  adForm.classList.remove('ad-form--disabled');
-  for (i = 0; i <= adFormElement.length - 1; i++) {
-    adFormElement[i].removeAttribute('disabled');
-  }
-  addressInput.value = Math.round(parseInt(mapPinMain.style.left) + MAIN_PIN_WIDTH / 2) + ', ' + Math.round(parseInt(mapPinMain.style.top) + MAIN_PIN_HEIGHT);
-});
 
 var getRandomNumber = function (min, max) {
   var randomNumber = Math.round(Math.random() * (max - min) + min);
@@ -137,12 +122,6 @@ var createMapPin = function (arrAdverts) {
   pinIcon.alt = arrAdverts.offer.title;
   return mapPin;
 };
-/*
-var fragment = document.createDocumentFragment();
-for (var j = 0; j < similarAdverts.length; j++) {
-  fragment.appendChild(createMapPin(similarAdverts[j]));
-}
-mapPins.appendChild(fragment);*/
 
 var mapCardTemplate = document.querySelector('#map__card').content.querySelector('.map__card');
 var map = document.querySelector('.map');
@@ -209,7 +188,68 @@ var createSimilarAdvert = function () {
 
   return mapCard;
 };
-/*
-fragment.innerHtml = '';
-fragment.appendChild(createSimilarAdvert(similarAdverts[0]));
-map.insertBefore(fragment, mapFilters);*/
+
+adFormHeader.disabled = true;
+for (i = 0; i <= adFormElement.length - 1; i++) {
+  adFormElement[i].disabled = true;
+}
+addressInput.value = Math.round(parseInt(mapPinMain.style.left, 10) + MAIN_PIN_WIDTH / 2) + ', ' + Math.round(parseInt(mapPinMain.style.top, 10) + MAIN_PIN_WIDTH / 2);
+
+
+mapPinMain.addEventListener('mouseup', function () {
+  mapActive.classList.remove('map--faded');
+  adForm.classList.remove('ad-form--disabled');
+  for (i = 0; i <= adFormElement.length - 1; i++) {
+    adFormElement[i].removeAttribute('disabled');
+  }
+  addressInput.value = Math.round(parseInt(mapPinMain.style.left, 10) + MAIN_PIN_WIDTH / 2) + ', ' + Math.round(parseInt(mapPinMain.style.top, 10) + MAIN_PIN_HEIGHT);
+
+  var fragment = document.createDocumentFragment();
+  for (var j = 0; j < similarAdverts.length; j++) {
+    fragment.appendChild(createMapPin(similarAdverts[j]));
+  }
+  mapPins.appendChild(fragment);
+});
+
+var onAdvertButtonCloseClick = function () {
+  deleteOpenedAdvert();
+};
+
+var deleteOpenedAdvert = function () {
+  var openedAdvert = map.querySelector('.map__card');
+
+  if (openedAdvert) {
+    var advertButtonClose = openedAdvert.querySelector('.popup__close');
+
+    advertButtonClose.removeEventListener('click', onAdvertButtonCloseClick);
+
+    for (i = map.children.length - 1; i > 0; i--) {
+      if (map.children[i] === openedAdvert) {
+        map.removeChild(map.children[i]);
+      }
+    }
+  }
+};
+
+
+function addEvent(element, eventType, handler) {
+  if (element.addEventListener) {
+    element.addEventListener(eventType, handler);
+  } else {
+    element.attachEvent(eventType, handler);
+  }
+}
+
+addEvent(mapPinsContainer, 'mouseup', function (evt) {
+  if (evt.target.tagName.toLowerCase() === 'button' || evt.target.tagName.toLowerCase() === 'img') {
+    deleteOpenedAdvert();
+    for (i = 0; i < similarAdverts.length; i++) {
+    /* if (similarAdverts[i].author.avatar == evt.target.src) {*/
+      var fragment = document.createDocumentFragment();
+      fragment.innerHtml = '';
+      fragment.appendChild(createSimilarAdvert(similarAdverts[i]));
+      map.insertBefore(fragment, mapFilters);
+      // }
+    }
+  }
+});
