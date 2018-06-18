@@ -275,7 +275,7 @@ var onPinClick = function (advert) {
     onCloseAdvertClick(currentPopup);
     addAdvertToMap(currentPopup);
   };
-}
+};
 
 var onCloseBtnClick = function () {
   closeCurrentPopup();
