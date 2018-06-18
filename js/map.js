@@ -192,6 +192,7 @@ var getFormDisabled = function () {
 
 var getFormEnabled = function () {
   adForm.classList.remove('ad-form--disabled');
+  adFormHeader.disabled = false;
   for (var j = 0; j < adFormElement.length; j++) {
     adFormElement[j].removeAttribute('disabled');
   }
