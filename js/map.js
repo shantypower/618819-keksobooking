@@ -254,10 +254,10 @@ var addPinsToMap = function (fragment) {
   mapPinsContainer.appendChild(fragment);
 };
 
-var addAdvertToMap = function () {
+var addAdvertToMap = function (currentAdvert) {
   var fragment = document.createDocumentFragment();
   fragment.innerHtml = '';
-  fragment.appendChild(createSimilarAdvert(similarAdverts[i]));
+  fragment.appendChild(currentAdvert);
   map.insertBefore(fragment, mapFilters);
 };
 
