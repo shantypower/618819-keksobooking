@@ -178,6 +178,8 @@ var createSimilarAdvert = function (advert) {
   advertPhotos.removeChild(advertPhotos.children[0]);
   advertAvatar.src = advert.author.avatar;
 
+  document.addEventListener('keydown', onKeyEscPress);
+
   return mapCard;
 };
 // module4-task1
@@ -269,7 +271,7 @@ var addAdvertToMap = function (currentAdvert) {
 var closeCurrentPopup = function () {
   currentPopup.remove();
   currentPopup = null;
-  document.removeEventListener('keypress', onKeyEscPress);
+
   document.removeEventListener('click', onCloseBtnClick);
 };
 
@@ -292,6 +294,7 @@ var onKeyEscPress = function (evt) {
   if (evt.keyCode === ESC_KEYCODE) {
     closeCurrentPopup();
   }
+  document.removeEventListener('keydown', onKeyEscPress);
 };
 
 var onCloseAdvertClick = function (closePopup) {
@@ -316,4 +319,3 @@ var onMainPinClick = function () {
 getPageDisabled();
 getPinAddressToForm();
 mapPinMain.addEventListener('mouseup', onMainPinClick);
-document.addEventListener('keypress', onKeyEscPress);
