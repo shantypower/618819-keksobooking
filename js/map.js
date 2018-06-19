@@ -319,3 +319,63 @@ var onMainPinClick = function () {
 getPageDisabled();
 getPinAddressToForm();
 mapPinMain.addEventListener('mouseup', onMainPinClick);
+
+//
+var inputTitle = document.querySelector('#title');
+var inputPrice = document.querySelector('#price');
+var selectHouseType = document.querySelector('#type');
+
+
+var initiateValidation = function () {
+  inputTitle.addEventListener('input', validation, false);
+  inputPrice.addEventListener('input', validation, false);
+  validation();
+}
+
+var validation = function () {
+  if (inputTitle.validity.tooShort) {
+    inputTitle.setCustomValidity('Необходимо ввести минимум 30 символов');
+  }
+  else if (inputTitle.validity.tooLong) {
+    inputTitle.setCustomValidity('Максимально можно ввести 100 символов');
+  } else if (inputTitle.validity.valueMissing) {
+    inputTitle.setCustomValidity('Обязательное поле');
+  } else {
+    inputTitle.setCustomValidity('');
+  }
+
+  if (inputPrice.validity.rangeOverflow) {
+    inputPrice.setCustomValidity('Значение цены не должно превышать 1000000');
+  } else if (inputPrice.validity.valueMissing) {
+    inputPrice.setCustomValidity('Обязательное поле');
+  } else {
+    inputPrice.setCustomValidity('');
+  }
+}
+
+var onSelectHouseTypeClick = function () {
+  switch (selectHouseType.value) {
+    case 'bungalo':
+      inputPrice.placeholder = '0';
+      inputPrice.min = 0;
+      break;
+    case 'flat':
+      inputPrice.placeholder = '1000';
+      inputPrice.min = 1000;
+      break;
+    case 'house':
+      inputPrice.placeholder = '5000';
+      inputPrice.min = 5000;
+      break;
+    case 'palace':
+      inputPrice.placeholder = '10000';
+      inputPrice.min = 10000;
+      break;
+    default:
+      break;
+  }
+};
+
+selectHouseType.addEventListener('change', onSelectHouseTypeClick);
+
+window.addEventListener('load', initiateValidation, false);
