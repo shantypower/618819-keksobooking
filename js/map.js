@@ -12,22 +12,30 @@ var OFFER_TITLES = [
   'Уютное бунгало далеко от моря',
   'Неуютное бунгало по колено в воде'
 ];
-var OFFER_TYPES = ['palace', 'flat', 'house', 'bungalo'];
+var OFFER_TYPES = [
+  'palace',
+  'flat',
+  'house',
+  'bungalo'
+];
 var OFFER_CHECKS = ['12:00', '13:00', '14:00'];
-var OFFER_FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
+var OFFER_FEATURES = [
+  'wifi',
+  'dishwasher',
+  'parking', 'washer',
+  'elevator',
+  'conditioner'
+];
 var OFFER_PHOTOS = [
-  'http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'
+  'http://o0.github.io/assets/images/tokyo/hotel1.jpg',
+  'http://o0.github.io/assets/images/tokyo/hotel2.jpg',
+  'http://o0.github.io/assets/images/tokyo/hotel3.jpg'
 ];
 var PIN_WIDTH = 50;
 var PIN_HEIGHT = 70;
 
-var mapActive = document.querySelector('.map');
-mapActive.classList.remove('map--faded');
-
 var getRandomNumber = function (min, max) {
-  var randomNumber = Math.round(Math.random() * (max - min) + min);
-
-  return randomNumber;
+  return Math.round(Math.random() * (max - min) + min);
 };
 
 var getRandomArrayElement = function (arr) {
@@ -92,11 +100,10 @@ var getSimilarAdvert = function () {
 };
 
 var similarAdverts = [];
-for (var i = 0; i <= NUMBER_OF_ADVERTS - 1; i++) {
-  similarAdverts[i] = getSimilarAdvert();
+for (var j = 0; j <= NUMBER_OF_ADVERTS - 1; j++) {
+  similarAdverts[j] = getSimilarAdvert();
 }
 
-var mapPins = document.querySelector('.map__pins');
 var mapPinTemplate = document.querySelector('#map__card').content.querySelector('.map__pin');
 
 var createMapPin = function (arrAdverts) {
@@ -108,17 +115,11 @@ var createMapPin = function (arrAdverts) {
   return mapPin;
 };
 
-var fragment = document.createDocumentFragment();
-for (var j = 0; j < similarAdverts.length; j++) {
-  fragment.appendChild(createMapPin(similarAdverts[j]));
-}
-mapPins.appendChild(fragment);
-
 var mapCardTemplate = document.querySelector('#map__card').content.querySelector('.map__card');
 var map = document.querySelector('.map');
 var mapFilters = document.querySelector('.map__filters-container');
 
-var createSimilarAdvert = function () {
+var createSimilarAdvert = function (advert) {
   var mapCard = mapCardTemplate.cloneNode(true);
   var advertTitle = mapCard.querySelector('.popup__title');
   var advertAddress = mapCard.querySelector('.popup__text--address');
@@ -131,11 +132,11 @@ var createSimilarAdvert = function () {
   var advertPhotos = mapCard.querySelector('.popup__photos');
   var advertAvatar = mapCard.querySelector('.popup__avatar');
 
-  advertTitle.textContent = similarAdverts[0].offer.title;
-  advertAddress.textContent = similarAdverts[0].offer.address;
-  advertPrice.textContent = similarAdverts[0].offer.price + ' денежек /ночь.';
+  advertTitle.textContent = advert.offer.title;
+  advertAddress.textContent = advert.offer.address;
+  advertPrice.textContent = advert.offer.price + ' денежек /ночь.';
 
-  switch (similarAdverts[0].offer.type) {
+  switch (advert.offer.type) {
     case ('flat'):
       advertType.textContent = 'Квартира';
       break;
@@ -153,11 +154,11 @@ var createSimilarAdvert = function () {
       break;
   }
 
-  advertCapacity.textContent = similarAdverts[0].offer.rooms + ' комнаты для ' + similarAdverts[0].offer.guests + ' гостей';
-  advertTime.textContent = 'Заезд после ' + similarAdverts[0].offer.checkin + ', выезд до ' + similarAdverts[0].offer.checkout;
+  advertCapacity.textContent = advert.offer.rooms + ' комнаты для ' + advert.offer.guests + ' гостей';
+  advertTime.textContent = 'Заезд после ' + advert.offer.checkin + ', выезд до ' + advert.offer.checkout;
 
-  for (i = 0; i < similarAdverts[0].offer.features.length; i++) {
-    advertFeatures.querySelector('.popup__feature--' + similarAdverts[0].offer.features[i]).textContent = similarAdverts[0].offer.features[i];
+  for (var i = 0; i < advert.offer.features.length; i++) {
+    advertFeatures.querySelector('.popup__feature--' + advert.offer.features[i]).textContent = advert.offer.features[i];
   }
 
   for (i = 0; i < advertFeatures.children.length; i++) {
@@ -166,20 +167,155 @@ var createSimilarAdvert = function () {
     }
   }
 
-  advertDescription.textContent = similarAdverts[0].offer.description;
+  advertDescription.textContent = advert.offer.description;
 
-  for (i = 0; i < similarAdverts[0].offer.photos.length; i++) {
+  for (i = 0; i < advert.offer.photos.length; i++) {
     var photo = advertPhotos.children[0].cloneNode();
-    photo.src = similarAdverts[0].offer.photos[i];
+    photo.src = advert.offer.photos[i];
     advertPhotos.appendChild(photo);
   }
 
   advertPhotos.removeChild(advertPhotos.children[0]);
-  advertAvatar.src = similarAdverts[0].author.avatar;
+  advertAvatar.src = advert.author.avatar;
+
+  document.addEventListener('keydown', onKeyEscPress);
 
   return mapCard;
 };
+// module4-task1
+var MAIN_PIN_WIDTH = 65;
+var MAIN_PIN_HEIGHT = 65;
+var MAIN_PIN_TAIL_HEIGHT = 22;
+var ESC_KEYCODE = 27;
+var mapPinsContainer = document.querySelector('.map__pins');
+var mapPinMain = document.querySelector('.map__pin--main');
+var adForm = document.querySelector('.ad-form');
+var adFormHeader = adForm.querySelector('.ad-form-header');
+var adFormElement = adForm.querySelectorAll('.ad-form__element');
+var addressInput = adForm.querySelector('#address');
 
-fragment.innerHtml = '';
-fragment.appendChild(createSimilarAdvert(similarAdverts[0]));
-map.insertBefore(fragment, mapFilters);
+var currentPopup = null;
+
+var getFormDisabled = function () {
+  adForm.classList.add('ad-form--disabled');
+  adFormHeader.disabled = true;
+  for (var i = 0; i < adFormElement.length; i++) {
+    adFormElement[i].disabled = true;
+  }
+};
+
+var getFormEnabled = function () {
+  adForm.classList.remove('ad-form--disabled');
+  adFormHeader.disabled = false;
+  for (var t = 0; t < adFormElement.length; t++) {
+    adFormElement[t].removeAttribute('disabled');
+  }
+};
+
+var getPageEnabled = function () {
+  map.classList.remove('map--faded');
+  getFormEnabled();
+};
+
+var getPageDisabled = function () {
+  map.classList.add('map--faded');
+  getFormDisabled();
+};
+
+var isMapActive = function () {
+  return !(map.classList.contains('map--faded'));
+};
+
+var calculatePinAddress = function () {
+  var pinX = Math.round(parseInt(mapPinMain.style.left, 10) + MAIN_PIN_WIDTH / 2);
+  var pinY = Math.round(parseInt(mapPinMain.style.top, 10) + MAIN_PIN_WIDTH / 2);
+  if (isMapActive()) {
+    pinY += Math.round(MAIN_PIN_HEIGHT / 2 + MAIN_PIN_TAIL_HEIGHT);
+  }
+  return pinX + ', ' + pinY;
+};
+
+var getPinAddressToForm = function () {
+  addressInput.value = calculatePinAddress();
+};
+
+var createPinsArray = function (arrAdverts) {
+  var pinsArray = [];
+  for (var i = 0; i < similarAdverts.length; i++) {
+    pinsArray.push(createMapPin(arrAdverts[i]));
+  }
+  return pinsArray;
+};
+
+var pinsNodesArray = createPinsArray(similarAdverts);
+
+var createPinsNodes = function (arrPins) {
+  var fragment = document.createDocumentFragment();
+  for (var i = 0; i < arrPins.length; i++) {
+    fragment.appendChild(arrPins[i]);
+  }
+  return fragment;
+};
+
+var addPinsToMap = function (fragment) {
+  mapPinsContainer.appendChild(fragment);
+};
+
+var addAdvertToMap = function (currentAdvert) {
+  var fragment = document.createDocumentFragment();
+  fragment.innerHtml = '';
+  fragment.appendChild(currentAdvert);
+  map.insertBefore(fragment, mapFilters);
+};
+
+var closeCurrentPopup = function () {
+  currentPopup.remove();
+  currentPopup = null;
+
+  document.removeEventListener('click', onCloseBtnClick);
+};
+
+var onPinClick = function (advert) {
+  return function () {
+    if (currentPopup !== null) {
+      closeCurrentPopup();
+    }
+    currentPopup = createSimilarAdvert(advert);
+    onCloseAdvertClick(currentPopup);
+    addAdvertToMap(currentPopup);
+  };
+};
+
+var onCloseBtnClick = function () {
+  closeCurrentPopup();
+};
+
+var onKeyEscPress = function (evt) {
+  if (evt.keyCode === ESC_KEYCODE) {
+    closeCurrentPopup();
+  }
+  document.removeEventListener('keydown', onKeyEscPress);
+};
+
+var onCloseAdvertClick = function (closePopup) {
+  closePopup.querySelector('.popup__close').addEventListener('click', onCloseBtnClick);
+};
+
+var onPinClicks = function () {
+  for (var i = 0; i < pinsNodesArray.length; i++) {
+    pinsNodesArray[i].addEventListener('click', onPinClick(similarAdverts[i]));
+  }
+};
+
+var onMainPinClick = function () {
+  if (!isMapActive()) {
+    getPageEnabled();
+    getPinAddressToForm();
+    addPinsToMap(createPinsNodes(pinsNodesArray));
+    onPinClicks();
+  }
+};
+
+getPageDisabled();
+getPinAddressToForm();
+mapPinMain.addEventListener('mouseup', onMainPinClick);
