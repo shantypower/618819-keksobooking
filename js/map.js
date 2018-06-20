@@ -321,18 +321,29 @@ getPinAddressToForm();
 mapPinMain.addEventListener('mouseup', onMainPinClick);
 
 //
-var inputTitle = document.querySelector('#title');
-var inputPrice = document.querySelector('#price');
-var selectHouseType = document.querySelector('#type');
+var inputTitle = adForm.querySelector('#title');
+var inputPrice = adForm.querySelector('#price');
+var selectHouseType = adForm.querySelector('#type');
+var selektCheckIn = adForm.querySelector('#timein');
+var selektCheckOut = adForm.querySelector('#timeout');
+var selectRooms = adForm.querySelector('#room_number');
+var selectCapacity = adForm.querySelector('#capacity');
+var resetButton = adForm.querySelector('.ad-form__reset');
 
+var MIN_PRICES = {
+  'bungalo': 0,
+  'flat': 1000,
+  'house': 5000,
+  'palace': 100000
+};
 
-var initiateValidation = function () {
-  inputTitle.addEventListener('input', validation, false);
-  inputPrice.addEventListener('input', validation, false);
-  validation();
-}
+var onSelectHouseTypeChange = function() {
+  var minPrice = MIN_PRICES[selectHouseType.value];
+  inputPrice.setAttribute('min', minPrice);
+  inputPrice.setAttribute('placeholder', minPrice);
+};
 
-var validation = function () {
+var onInputChange = function () {
   if (inputTitle.validity.tooShort) {
     inputTitle.setCustomValidity('Необходимо ввести минимум 30 символов');
   }
@@ -353,29 +364,57 @@ var validation = function () {
   }
 }
 
-var onSelectHouseTypeClick = function () {
-  switch (selectHouseType.value) {
-    case 'bungalo':
-      inputPrice.placeholder = '0';
-      inputPrice.min = 0;
+function onSelectRoomsChange() {
+  var selectedCapacity = Number(selectCapacity.value);
+  var selectedRooms = Number(selectRooms.value);
+  var errorMessage = '';
+  switch (selectedRooms) {
+    case (1): {
+      if (selectedCapacity > 1) {
+        errorMessage = 'При выборе "1 комната" можно выбрать количество мест: для 1 гостя';
+      }
       break;
-    case 'flat':
-      inputPrice.placeholder = '1000';
-      inputPrice.min = 1000;
+    }
+    case (2): {
+      if (selectedCapacity > 2) {
+        errorMessage = 'При выборе "2 комнаты" можно выбрать количество мест: для 1 гостя; для 2 гостей';
+      }
       break;
-    case 'house':
-      inputPrice.placeholder = '5000';
-      inputPrice.min = 5000;
+    }
+    case (3): {
+      if (selectedCapacity > 3) {
+        errorMessage = 'При выборе "3 комнаты" можно выбрать количество мест: для 1 гостя; для 2 гостей; для 3 гостей';
+      }
       break;
-    case 'palace':
-      inputPrice.placeholder = '10000';
-      inputPrice.min = 10000;
+    }
+    case (100): {
+      if (selectedCapacity !== 100) {
+        errorMessage = 'При выборе "100 комнат" можно выбрать количество мест: не для гостей';
+      }
       break;
-    default:
-      break;
+    }
   }
+  selectCapacity.setCustomValidity(errorMessage);
+}
+
+var onResetButtonClick = function (event) {
+  event.preventDefault();
+  adForm.reset();
+}
+
+var initiateValidation = function () {
+  inputTitle.addEventListener('input', onInputChange);
+  inputPrice.addEventListener('input', onInputChange);
+  selectCapacity.addEventListener('change', onSelectRoomsChange);
+  selectHouseType.addEventListener('change', onSelectHouseTypeChange);
+  selectRooms.addEventListener('change', onSelectRoomsChange);
+  selektCheckIn.addEventListener('change', function () {
+  selektCheckOut.value = selektCheckIn.value;
+  });
+  selektCheckOut.addEventListener('change', function () {
+    selektCheckIn.value = selektCheckOut.value;
+  });
+  resetButton.addEventListener('click', onResetButtonClick);
 };
 
-selectHouseType.addEventListener('change', onSelectHouseTypeClick);
-
-window.addEventListener('load', initiateValidation, false);
+window.addEventListener('load', initiateValidation);
