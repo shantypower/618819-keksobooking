@@ -370,13 +370,13 @@ function onSelectRoomsChange() {
   var errorMessage = '';
   switch (selectedRooms) {
     case (1): {
-      if (selectedCapacity > 1) {
+      if (selectedCapacity > 1 || selectedCapacity == 0) {
         errorMessage = 'При выборе "1 комната" можно выбрать количество мест: для 1 гостя';
       }
       break;
     }
     case (2): {
-      if (selectedCapacity > 2) {
+      if (selectedCapacity > 2 || selectedCapacity == 0) {
         errorMessage = 'При выборе "2 комнаты" можно выбрать количество мест: для 1 гостя; для 2 гостей';
       }
       break;
@@ -388,7 +388,7 @@ function onSelectRoomsChange() {
       break;
     }
     case (100): {
-      if ( selectedCapacity <= 3 &&  selectedCapacity > 0) {
+      if (selectedCapacity > 0) {
         errorMessage = 'При выборе "100 комнат" можно выбрать количество мест: не для гостей';
       }
       break;
@@ -409,8 +409,10 @@ var removePins = function() {
 var onResetButtonClick = function (event) {
   event.preventDefault();
   removePins();
+  closeCurrentPopup();
   getPageDisabled();
   adForm.reset();
+  getPinAddressToForm();
 }
 
 var initiateValidation = function () {
