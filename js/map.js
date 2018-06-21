@@ -337,7 +337,7 @@ var MIN_PRICES = {
   'palace': 100000
 };
 
-var onSelectHouseTypeChange = function() {
+var onSelectHouseTypeChange = function () {
   var minPrice = MIN_PRICES[selectHouseType.value];
   inputPrice.setAttribute('min', minPrice);
   inputPrice.setAttribute('placeholder', minPrice);
@@ -346,8 +346,7 @@ var onSelectHouseTypeChange = function() {
 var onInputChange = function () {
   if (inputTitle.validity.tooShort) {
     inputTitle.setCustomValidity('Необходимо ввести минимум 30 символов');
-  }
-  else if (inputTitle.validity.tooLong) {
+  } else if (inputTitle.validity.tooLong) {
     inputTitle.setCustomValidity('Максимально можно ввести 100 символов');
   } else if (inputTitle.validity.valueMissing) {
     inputTitle.setCustomValidity('Обязательное поле');
@@ -362,7 +361,7 @@ var onInputChange = function () {
   } else {
     inputPrice.setCustomValidity('');
   }
-}
+};
 
 function onSelectRoomsChange() {
   var selectedCapacity = Number(selectCapacity.value);
@@ -370,19 +369,19 @@ function onSelectRoomsChange() {
   var errorMessage = '';
   switch (selectedRooms) {
     case (1): {
-      if (selectedCapacity > 1 || selectedCapacity == 0) {
+      if (selectedCapacity > 1 || selectedCapacity === 0) {
         errorMessage = 'При выборе "1 комната" можно выбрать количество мест: для 1 гостя';
       }
       break;
     }
     case (2): {
-      if (selectedCapacity > 2 || selectedCapacity == 0) {
+      if (selectedCapacity > 2 || selectedCapacity === 0) {
         errorMessage = 'При выборе "2 комнаты" можно выбрать количество мест: для 1 гостя; для 2 гостей';
       }
       break;
     }
     case (3): {
-      if (selectedCapacity > 3 || selectedCapacity == 0) {
+      if (selectedCapacity > 3 || selectedCapacity === 0) {
         errorMessage = 'При выборе "3 комнаты" можно выбрать количество мест: для 1 гостя; для 2 гостей; для 3 гостей';
       }
       break;
@@ -397,14 +396,14 @@ function onSelectRoomsChange() {
   selectCapacity.setCustomValidity(errorMessage);
 }
 
-var removePins = function() {
+var removePins = function () {
   var pins = document.querySelectorAll('.map__pin');
-   for (var i = pins.length - 1; i > 0; i--) {
+  for (var i = pins.length - 1; i > 0; i--) {
     if (pins[i] !== mapPinMain) {
       mapPinsContainer.removeChild(pins[i]);
     }
   }
-}
+};
 
 var onResetButtonClick = function (event) {
   event.preventDefault();
@@ -413,7 +412,7 @@ var onResetButtonClick = function (event) {
   getPageDisabled();
   adForm.reset();
   getPinAddressToForm();
-}
+};
 
 var initiateValidation = function () {
   inputTitle.addEventListener('input', onInputChange);
@@ -422,7 +421,7 @@ var initiateValidation = function () {
   selectHouseType.addEventListener('change', onSelectHouseTypeChange);
   selectRooms.addEventListener('change', onSelectRoomsChange);
   selektCheckIn.addEventListener('change', function () {
-  selektCheckOut.value = selektCheckIn.value;
+    selektCheckOut.value = selektCheckIn.value;
   });
   selektCheckOut.addEventListener('change', function () {
     selektCheckIn.value = selektCheckOut.value;
