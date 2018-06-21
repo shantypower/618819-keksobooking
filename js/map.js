@@ -324,8 +324,8 @@ mapPinMain.addEventListener('mouseup', onMainPinClick);
 var inputTitle = adForm.querySelector('#title');
 var inputPrice = adForm.querySelector('#price');
 var selectHouseType = adForm.querySelector('#type');
-var selektCheckIn = adForm.querySelector('#timein');
-var selektCheckOut = adForm.querySelector('#timeout');
+var selectCheckIn = adForm.querySelector('#timein');
+var selectCheckOut = adForm.querySelector('#timeout');
 var selectRooms = adForm.querySelector('#room_number');
 var selectCapacity = adForm.querySelector('#capacity');
 var resetButton = adForm.querySelector('.ad-form__reset');
@@ -408,23 +408,26 @@ var removePins = function () {
 var onResetButtonClick = function (event) {
   event.preventDefault();
   removePins();
-  closeCurrentPopup();
+  if (currentPopup !== null) {
+    closeCurrentPopup();
+  }
   getPageDisabled();
   adForm.reset();
   getPinAddressToForm();
 };
 
-var initiateValidation = function () {
-  inputTitle.addEventListener('input', onInputChange);
+var initiateValidation = function (evt) {
+  inputTitle.addEventListener('invalid', onInputChange);
   inputPrice.addEventListener('input', onInputChange);
+  inputPrice.addEventListener('invalid', onInputChange);
   selectCapacity.addEventListener('change', onSelectRoomsChange);
   selectHouseType.addEventListener('change', onSelectHouseTypeChange);
   selectRooms.addEventListener('change', onSelectRoomsChange);
-  selektCheckIn.addEventListener('change', function () {
-    selektCheckOut.value = selektCheckIn.value;
+  selectCheckIn.addEventListener('change', function () {
+    selectCheckOut.value = selectCheckIn.value;
   });
-  selektCheckOut.addEventListener('change', function () {
-    selektCheckIn.value = selektCheckOut.value;
+  selectCheckOut.addEventListener('change', function () {
+    selectCheckIn.value = selectCheckOut.value;
   });
   resetButton.addEventListener('click', onResetButtonClick);
 };
