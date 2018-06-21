@@ -398,16 +398,17 @@ function onSelectRoomsChange() {
 }
 
 var removePins = function() {
-  while (pinsNodesArray.length > 0) {
-    pinsNodesArray[0].remove();
-    pinsNodesArray.shift();
+  var pins = document.querySelectorAll('.map__pin');
+   for (var i = pins.length - 1; i > 0; i--) {
+    if (pins[i] !== mapPinMain) {
+      mapPinsContainer.removeChild(pins[i]);
+    }
   }
-  pinsNodesArray = null;
 }
 
 var onResetButtonClick = function (event) {
   event.preventDefault();
-  //closeCurrentPopup();
+  removePins();
   getPageDisabled();
   adForm.reset();
 }
