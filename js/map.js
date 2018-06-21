@@ -416,7 +416,7 @@ var onResetButtonClick = function (event) {
   getPinAddressToForm();
 };
 
-var initiateValidation = function (evt) {
+var initiateValidation = function () {
   inputTitle.addEventListener('invalid', onInputChange);
   inputPrice.addEventListener('input', onInputChange);
   inputPrice.addEventListener('invalid', onInputChange);
