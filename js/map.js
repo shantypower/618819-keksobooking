@@ -313,12 +313,62 @@ var onMainPinClick = function () {
     getPinAddressToForm();
     addPinsToMap(createPinsNodes(pinsNodesArray));
     onPinClicks();
+    //mapPinMain.addEventListener('mousemove', onMouseMove);
+    //mapPinMain.addEventListener('mouseup', onMouseMove);
   }
 };
 
 getPageDisabled();
 getPinAddressToForm();
-mapPinMain.addEventListener('mouseup', onMainPinClick);
+
+
+mapPinMain.addEventListener('mousedown', function (downEvt) {
+  downEvt.preventDefault();
+
+  var startCoords = {
+    x: downEvt.clientX,
+    y: downEvt.clientY
+  };
+
+  var dragged = false;
+
+  var onMouseMove = function (moveEvt) {
+    moveEvt.preventDefault();
+    dragged = true;
+
+    var shift = {
+      x: startCoords.x - moveEvt.clientX,
+      y: startCoords.y - moveEvt.clientY
+    };
+
+    startCoords = {
+      x: moveEvt.clientX,
+      y: moveEvt.clientY
+    };
+
+    mapPinMain.style.top = (mapPinMain.offsetTop - shift.y) + 'px';
+    mapPinMain.style.left = (mapPinMain.offsetLeft - shift.x) + 'px';
+  };
+
+  var onMouseUp = function (upEvt) {
+    upEvt.preventDefault();
+    onMainPinClick();
+    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('mouseup', onMouseUp);
+
+    if (dragged) {
+      var onClickPreventDefault = function (evt) {
+        evt.preventDefault();
+        mapPinMain.removeEventListener('click', onClickPreventDefault);
+      };
+      mapPinMain.addEventListener('click', onClickPreventDefault);
+    }
+
+  };
+
+  document.addEventListener('mousemove', onMouseMove);
+  document.addEventListener('mouseup', onMouseUp);
+});
 
 //
 var inputTitle = adForm.querySelector('#title');
@@ -433,3 +483,5 @@ var initiateValidation = function () {
 };
 
 window.addEventListener('load', initiateValidation);
+
+
