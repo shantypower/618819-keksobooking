@@ -313,13 +313,11 @@ var onMainPinClick = function () {
     getPinAddressToForm();
     addPinsToMap(createPinsNodes(pinsNodesArray));
     onPinClicks();
-    //mapPinMain.addEventListener('mousemove', onMouseMove);
-    //mapPinMain.addEventListener('mouseup', onMouseMove);
   }
 };
 
 getPageDisabled();
-getPinAddressToForm();
+//getPinAddressToForm();
 
 
 mapPinMain.addEventListener('mousedown', function (downEvt) {
@@ -348,6 +346,9 @@ mapPinMain.addEventListener('mousedown', function (downEvt) {
 
     mapPinMain.style.top = (mapPinMain.offsetTop - shift.y) + 'px';
     mapPinMain.style.left = (mapPinMain.offsetLeft - shift.x) + 'px';
+
+    calculatePinAddress();
+    getPinAddressToForm();
   };
 
   var onMouseUp = function (upEvt) {
