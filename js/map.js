@@ -1,66 +1,30 @@
 'use strict';
 
-var getRandomNumber = function (min, max) {
-  return Math.round(Math.random() * (max - min) + min);
-};
-
-var getRandomArrayElement = function (arr) {
-  var randomElementIndex = getRandomNumber(0, arr.length - 1);
-
-  return arr[randomElementIndex];
-};
-
-var getUniqueArrayElement = function (array) {
-  return array.splice(getRandomNumber(0, array.length - 1), 1).toString();
-};
-
-var getRandomArray = function (array) {
-  var sourceArray = getShuffledArray(array);
-  var randomArray = [];
-  var randomLength = getRandomNumber(1, (array.length - 1));
-  for (var i = 0; i <= randomLength; i++) {
-    randomArray[i] = sourceArray[i];
-  }
-
-  return randomArray;
-};
-
-var getShuffledArray = function (arr) {
-  for (var i = 0; i < arr.length; i++) {
-    var j = getRandomNumber(0, arr.length - 1);
-    var tmp = arr[i];
-    arr[i] = arr[j];
-    arr[j] = tmp;
-  }
-
-  return arr;
-};
-
 var getSimilarAdvert = function () {
   var similarAdvert = {};
 
   var author = {};
   similarAdvert.author = author;
-  author.avatar = 'img/avatars/user' + getUniqueArrayElement( window.constants.AVATARS) + '.png';
+  author.avatar = 'img/avatars/user' + window.getRandomFunctions.getUniqueArrayElement(window.constants.AVATARS) + '.png';
 
   var location = {};
   similarAdvert.location = location;
-  location.x = getRandomNumber(300, 900);
-  location.y = getRandomNumber(130, 630);
+  location.x =  window.getRandomFunctions.getRandomNumber(300, 900);
+  location.y =  window.getRandomFunctions.getRandomNumber(130, 630);
 
   var offer = {};
   similarAdvert.offer = offer;
-  offer.title = getUniqueArrayElement( window.constants.OFFER_TITLES);
+  offer.title = window.getRandomFunctions.getUniqueArrayElement( window.constants.OFFER_TITLES);
   offer.address = location.x + ', ' + location.y;
-  offer.price = getRandomNumber(1000, 1000000);
-  offer.type = getRandomArrayElement( window.constants.OFFER_TYPES);
-  offer.rooms = getRandomNumber(1, 5);
-  offer.guests = getRandomNumber(1, 10);
-  offer.checkin = getRandomArrayElement( window.constants.OFFER_CHECKS);
-  offer.checkout = getRandomArrayElement( window.constants.OFFER_CHECKS);
-  offer.features = getRandomArray( window.constants.OFFER_FEATURES);
+  offer.price =  window.getRandomFunctions.getRandomNumber(1000, 1000000);
+  offer.type =  window.getRandomFunctions.getRandomArrayElement( window.constants.OFFER_TYPES);
+  offer.rooms =  window.getRandomFunctions.getRandomNumber(1, 5);
+  offer.guests =  window.getRandomFunctions.getRandomNumber(1, 10);
+  offer.checkin =  window.getRandomFunctions.getRandomArrayElement( window.constants.OFFER_CHECKS);
+  offer.checkout =  window.getRandomFunctions.getRandomArrayElement( window.constants.OFFER_CHECKS);
+  offer.features = window.getRandomFunctions.getRandomArray( window.constants.OFFER_FEATURES);
   offer.description = '';
-  offer.photos = getShuffledArray( window.constants.OFFER_PHOTOS);
+  offer.photos = window.getRandomFunctions.getShuffledArray( window.constants.OFFER_PHOTOS);
 
   return similarAdvert;
 };
@@ -148,13 +112,7 @@ var createSimilarAdvert = function (advert) {
 
   return mapCard;
 };
-// module4-task1
-/*var MAIN_PIN_WIDTH = 65;
-var MAIN_PIN_HEIGHT = 65;
-var MAIN_PIN_TAIL_HEIGHT = 22;
-var MAIN_PIN_START_X = 570;
-var MAIN_PIN_START_Y = 375;
-var ESC_KEYCODE = 27;*/
+
 var mapPinsContainer = document.querySelector('.map__pins');
 var mapPinMain = document.querySelector('.map__pin--main');
 var adForm = document.querySelector('.ad-form');
@@ -299,8 +257,6 @@ mapPinMain.addEventListener('mousedown', function (downEvt) {
   var dragged = false;
 
   var onMouseMove = function (moveEvt) {
-    /*var TOP_LIMIT = 130;
-    var BOTTOM_LIMIT = 630;*/
     var mapPinParent = mapPinMain.offsetParent;
     var limits = {
       top:  window.constants.TOP_LIMIT -  window.constants.MAIN_PIN_HEIGHT -  window.constants.MAIN_PIN_TAIL_HEIGHT,
@@ -368,7 +324,6 @@ mapPinMain.addEventListener('mousedown', function (downEvt) {
   document.addEventListener('mouseup', onMouseUp);
 });
 
-//
 var inputTitle = adForm.querySelector('#title');
 var inputPrice = adForm.querySelector('#price');
 var selectHouseType = adForm.querySelector('#type');
@@ -377,13 +332,6 @@ var selectCheckOut = adForm.querySelector('#timeout');
 var selectRooms = adForm.querySelector('#room_number');
 var selectCapacity = adForm.querySelector('#capacity');
 var resetButton = adForm.querySelector('.ad-form__reset');
-/*
-var MIN_PRICES = {
-  'bungalo': 0,
-  'flat': 1000,
-  'house': 5000,
-  'palace': 100000
-};*/
 
 var onSelectHouseTypeChange = function () {
   var minPrice =  window.constants.MIN_PRICES[selectHouseType.value];
