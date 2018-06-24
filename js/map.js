@@ -48,7 +48,7 @@ var createMapPin = function (arrAdverts) {
 var mapCardTemplate = document.querySelector('#map__card').content.querySelector('.map__card');
 var map = document.querySelector('.map');
 var mapFilters = document.querySelector('.map__filters-container');
-
+/*
 var createSimilarAdvert = function (advert) {
   var mapCard = mapCardTemplate.cloneNode(true);
   var advertTitle = mapCard.querySelector('.popup__title');
@@ -111,7 +111,7 @@ var createSimilarAdvert = function (advert) {
   document.addEventListener('keydown', onKeyEscPress);
 
   return mapCard;
-};
+};*/
 
 var mapPinsContainer = document.querySelector('.map__pins');
 var mapPinMain = document.querySelector('.map__pin--main');
@@ -176,7 +176,7 @@ var onPinClick = function (advert) {
     if (currentPopup !== null) {
       closeCurrentPopup();
     }
-    currentPopup = createSimilarAdvert(advert);
+    currentPopup = window.createSimilarAdvert(advert);
     onCloseAdvertClick(currentPopup);
     addAdvertToMap(currentPopup);
   };
