@@ -1,39 +1,5 @@
 'use strict';
 
-var NUMBER_OF_ADVERTS = 8;
-var AVATARS = ['01', '02', '03', '04', '05', '06', '07', '08'];
-var OFFER_TITLES = [
-  'Большая уютная квартира',
-  'Маленькая неуютная квартира',
-  'Огромный прекрасный дворец',
-  'Маленький ужасный дворец',
-  'Красивый гостевой домик',
-  'Некрасивый негостеприимный домик',
-  'Уютное бунгало далеко от моря',
-  'Неуютное бунгало по колено в воде'
-];
-var OFFER_TYPES = [
-  'palace',
-  'flat',
-  'house',
-  'bungalo'
-];
-var OFFER_CHECKS = ['12:00', '13:00', '14:00'];
-var OFFER_FEATURES = [
-  'wifi',
-  'dishwasher',
-  'parking', 'washer',
-  'elevator',
-  'conditioner'
-];
-var OFFER_PHOTOS = [
-  'http://o0.github.io/assets/images/tokyo/hotel1.jpg',
-  'http://o0.github.io/assets/images/tokyo/hotel2.jpg',
-  'http://o0.github.io/assets/images/tokyo/hotel3.jpg'
-];
-var PIN_WIDTH = 50;
-var PIN_HEIGHT = 70;
-
 var getRandomNumber = function (min, max) {
   return Math.round(Math.random() * (max - min) + min);
 };
@@ -75,7 +41,7 @@ var getSimilarAdvert = function () {
 
   var author = {};
   similarAdvert.author = author;
-  author.avatar = 'img/avatars/user' + getUniqueArrayElement(AVATARS) + '.png';
+  author.avatar = 'img/avatars/user' + getUniqueArrayElement( window.constants.AVATARS) + '.png';
 
   var location = {};
   similarAdvert.location = location;
@@ -84,23 +50,23 @@ var getSimilarAdvert = function () {
 
   var offer = {};
   similarAdvert.offer = offer;
-  offer.title = getUniqueArrayElement(OFFER_TITLES);
+  offer.title = getUniqueArrayElement( window.constants.OFFER_TITLES);
   offer.address = location.x + ', ' + location.y;
   offer.price = getRandomNumber(1000, 1000000);
-  offer.type = getRandomArrayElement(OFFER_TYPES);
+  offer.type = getRandomArrayElement( window.constants.OFFER_TYPES);
   offer.rooms = getRandomNumber(1, 5);
   offer.guests = getRandomNumber(1, 10);
-  offer.checkin = getRandomArrayElement(OFFER_CHECKS);
-  offer.checkout = getRandomArrayElement(OFFER_CHECKS);
-  offer.features = getRandomArray(OFFER_FEATURES);
+  offer.checkin = getRandomArrayElement( window.constants.OFFER_CHECKS);
+  offer.checkout = getRandomArrayElement( window.constants.OFFER_CHECKS);
+  offer.features = getRandomArray( window.constants.OFFER_FEATURES);
   offer.description = '';
-  offer.photos = getShuffledArray(OFFER_PHOTOS);
+  offer.photos = getShuffledArray( window.constants.OFFER_PHOTOS);
 
   return similarAdvert;
 };
 
 var similarAdverts = [];
-for (var j = 0; j <= NUMBER_OF_ADVERTS - 1; j++) {
+for (var j = 0; j <=  window.constants.NUMBER_OF_ADVERTS - 1; j++) {
   similarAdverts[j] = getSimilarAdvert();
 }
 
@@ -109,7 +75,7 @@ var mapPinTemplate = document.querySelector('#map__card').content.querySelector(
 var createMapPin = function (arrAdverts) {
   var mapPin = mapPinTemplate.cloneNode(true);
   var pinIcon = mapPin.children[0];
-  mapPin.style = 'left: ' + (arrAdverts.location.x + PIN_WIDTH / 2) + 'px; top: ' + (arrAdverts.location.y + PIN_HEIGHT) + 'px';
+  mapPin.style = 'left: ' + (arrAdverts.location.x +  window.constants.PIN_WIDTH / 2) + 'px; top: ' + (arrAdverts.location.y +  window.constants.PIN_HEIGHT) + 'px';
   pinIcon.src = arrAdverts.author.avatar;
   pinIcon.alt = arrAdverts.offer.title;
   return mapPin;
