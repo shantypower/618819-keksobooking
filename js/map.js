@@ -357,7 +357,7 @@ mapPinMain.addEventListener('mousedown', function (downEvt) {
     };
 
 
-    var calculateNewCoords = function() {
+    var calculateNewCoords = function () {
       var newCoords = {
         x: mapPinMain.offsetLeft - shift.x,
         y: mapPinMain.offsetTop - shift.y
@@ -375,7 +375,7 @@ mapPinMain.addEventListener('mousedown', function (downEvt) {
         newCoords.y = limits.top;
       }
       return newCoords;
-    }
+    };
 
     mapPinMain.style.left = calculateNewCoords().x + 'px';
     mapPinMain.style.top = calculateNewCoords().y + 'px';
