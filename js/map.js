@@ -357,7 +357,7 @@ mapPinMain.addEventListener('mousedown', function (downEvt) {
     };
 
 
-    function calculateNewCoords() {
+    var calculateNewCoords = function() {
       var newCoords = {
         x: mapPinMain.offsetLeft - shift.x,
         y: mapPinMain.offsetTop - shift.y
@@ -377,11 +377,9 @@ mapPinMain.addEventListener('mousedown', function (downEvt) {
       return newCoords;
     }
 
-    var newMapPinCoords = calculateNewCoords();
-    mapPinMain.style.left = newMapPinCoords.x + 'px';
-    mapPinMain.style.top = newMapPinCoords.y + 'px';
+    mapPinMain.style.left = calculateNewCoords().x + 'px';
+    mapPinMain.style.top = calculateNewCoords().y + 'px';
 
-    calculatePinAddress();
     getPinAddressToForm();
   };
 
@@ -398,8 +396,6 @@ mapPinMain.addEventListener('mousedown', function (downEvt) {
       };
       mapPinMain.addEventListener('click', onClickPreventDefault);
     }
-    calculatePinAddress();
-    getPinAddressToForm();
   };
 
   document.addEventListener('mousemove', onMouseMove);
