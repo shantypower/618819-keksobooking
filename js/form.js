@@ -9,7 +9,7 @@
   var selectCheckOut = adForm.querySelector('#timeout');
   var selectRooms = adForm.querySelector('#room_number');
   var selectCapacity = adForm.querySelector('#capacity');
-  var resetButton = adForm.querySelector('.ad-form__reset')
+  var resetButton = adForm.querySelector('.ad-form__reset');
   var adFormHeader = adForm.querySelector('.ad-form-header');
   var adFormElement = adForm.querySelectorAll('.ad-form__element');
   var addressInput = adForm.querySelector('#address');
@@ -31,7 +31,7 @@
   };
 
   var onSelectHouseTypeChange = function () {
-    var minPrice =  window.constants.MIN_PRICES[selectHouseType.value];
+    var minPrice = window.constants.MIN_PRICES[selectHouseType.value];
     inputPrice.setAttribute('min', minPrice);
     inputPrice.setAttribute('placeholder', minPrice);
   };
@@ -92,8 +92,8 @@
   var removePins = function () {
     var pins = document.querySelectorAll('.map__pin');
     for (var i = pins.length - 1; i > 0; i--) {
-      if (pins[i] !== mapPinMain) {
-        mapPinsContainer.removeChild(pins[i]);
+      if (pins[i] !== window.map.mapPinMain) {
+        window.map.mapPinsContainer.removeChild(pins[i]);
       }
     }
   };
@@ -101,14 +101,14 @@
   var onResetButtonClick = function (event) {
     event.preventDefault();
     removePins();
-    if (currentPopup !== null) {
-      closeCurrentPopup();
+    if (window.map.currentPopup !== null) {
+      window.map.closeCurrentPopup();
     }
     window.map.getPageDisabled();
     adForm.reset();
-    mapPinMain.style.left = window.constants. MAIN_PIN_START_X + 'px';
-    mapPinMain.style.top =  window.constants. MAIN_PIN_START_Y + 'px';
-    getPinAddressToForm();
+    window.map.mapPinMain.style.left = window.constants.MAIN_PIN_START_X + 'px';
+    window.map.mapPinMain.style.top = window.constants.MAIN_PIN_START_Y + 'px';
+    window.map.getPinAddressToForm();
   };
 
   var initiateValidation = function () {
@@ -133,5 +133,5 @@
     getFormEnabled: getFormEnabled,
     getFormDisabled: getFormDisabled,
     addressInput: addressInput
-  }
+  };
 })();
