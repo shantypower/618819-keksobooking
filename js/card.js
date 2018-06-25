@@ -2,6 +2,7 @@
 
 (function () {
   window.createSimilarAdvert = function (advert) {
+    var mapCardTemplate = document.querySelector('#map__card').content.querySelector('.map__card');
     var mapCard = mapCardTemplate.cloneNode(true);
     var advertTitle = mapCard.querySelector('.popup__title');
     var advertAddress = mapCard.querySelector('.popup__text--address');
@@ -60,8 +61,9 @@
     advertPhotos.removeChild(advertPhotos.children[0]);
     advertAvatar.src = advert.author.avatar;
 
-    document.addEventListener('keydown', onKeyEscPress);
+    document.addEventListener('keydown', window.map.onKeyEscPress);
 
     return mapCard;
   };
+
 })();

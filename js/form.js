@@ -30,15 +30,6 @@
     }
   };
 
-  var getPageDisabled = function () {
-    map.classList.add('map--faded');
-    getFormDisabled();
-  };
-
-  var getPinAddressToForm = function () {
-    addressInput.value = calculatePinAddress();
-  };
-
   var onSelectHouseTypeChange = function () {
     var minPrice =  window.constants.MIN_PRICES[selectHouseType.value];
     inputPrice.setAttribute('min', minPrice);
@@ -113,7 +104,7 @@
     if (currentPopup !== null) {
       closeCurrentPopup();
     }
-    getPageDisabled();
+    window.map.getPageDisabled();
     adForm.reset();
     mapPinMain.style.left = window.constants. MAIN_PIN_START_X + 'px';
     mapPinMain.style.top =  window.constants. MAIN_PIN_START_Y + 'px';
@@ -139,8 +130,8 @@
   window.addEventListener('load', initiateValidation);
 
   window.form = {
-    getPageDisabled: getPageDisabled,
     getFormEnabled: getFormEnabled,
-    getPinAddressToForm: getPinAddressToForm
+    getFormDisabled: getFormDisabled,
+    addressInput: addressInput
   }
 })();
