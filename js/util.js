@@ -37,7 +37,7 @@
     return arr;
   };
 
-  window.getRandomFunctions = {
+  window.util = {
     getRandomNumber: getRandomNumber,
     getRandomArrayElement: getRandomArrayElement,
     getUniqueArrayElement: getUniqueArrayElement,
