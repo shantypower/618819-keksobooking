@@ -132,7 +132,6 @@
   var onSubmitClick = function (evt) {
     evt.preventDefault();
     window.backend.save(new FormData(adForm), onResetButtonClick, window.map.errorHandler);
-
   };
 
   adForm.addEventListener('submit', onSubmitClick);

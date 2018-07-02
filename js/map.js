@@ -203,7 +203,7 @@
     var pinsNodes = createPinsNodes(pinsNodesArray);
     addPinsToMap(pinsNodes);
     for (var i = 0; i < pinsNodesArray.length; i++) {
-      pinsNodesArray[i].addEventListener('click', onPinClick(pinsNodesArray[i]));
+      pinsNodesArray[i].addEventListener('click', onPinClick(data[i]));
     }
   };
 
