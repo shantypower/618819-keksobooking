@@ -3,6 +3,7 @@
 (function () {
   window.constants = {
     NUMBER_OF_ADVERTS: 8,
+    LOAD_TIME: 100000,
     AVATARS: ['01', '02', '03', '04', '05', '06', '07', '08'],
     OFFER_TITLES: [
       'Большая уютная квартира',
