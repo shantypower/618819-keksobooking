@@ -99,7 +99,7 @@
     if (!isMapActive()) {
       getPageEnabled();
       getPinAddressToForm();
-      window.backend.load(successHandler, popupHandler);
+      window.backend.load(successHandler, errorHandler);
     }
   };
 
@@ -193,7 +193,7 @@
     }
   };
 
-  var popupHandler = function (message) {
+  var errorHandler = function (message) {
     var node = document.createElement('div');
     node.style = 'z-index: 100; text-align: center; margin-left: -200px; background-color: #fefefe; border-radius: 10px; box-shadow: 0 30px 50px rgba(0, 0, 0, 0.7);';
     node.style.position = 'fixed';
@@ -221,7 +221,7 @@
     mapPinsContainer: mapPinsContainer,
     currentPopup: currentPopup,
     closeCurrentPopup: closeCurrentPopup,
-    popupHandler: popupHandler,
+    errorHandler: errorHandler,
     successHandler: successHandler
   };
 })();
