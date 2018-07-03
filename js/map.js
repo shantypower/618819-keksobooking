@@ -7,11 +7,6 @@
   var mapPinsContainer = document.querySelector('.map__pins');
   var mapPinMain = document.querySelector('.map__pin--main');
   var currentPopup = null;
-  /*
-      var similarAdverts = [];
-      for (var j = 0; j <= window.constants.NUMBER_OF_ADVERTS - 1; j++) {
-        similarAdverts[j] = window.getSimilarAdvert();
-      }*/
 
   var getPageEnabled = function () {
     map.classList.remove('map--faded');
@@ -47,8 +42,6 @@
     }
     return pinsArray;
   };
-
-  //  var pinsNodesArray = createPinsArray(similarAdverts);
 
   var createPinsNodes = function (arrPins) {
     var fragment = document.createDocumentFragment();
@@ -101,24 +94,17 @@
   var onCloseAdvertClick = function (closePopup) {
     closePopup.querySelector('.popup__close').addEventListener('click', onCloseBtnClick);
   };
-  /*
-    var onPinClicks = function (pinsNodesArr) {
-      for (var i = 0; i < pinsNodesArr.length; i++) {
-        pinsNodesArr[i].addEventListener('click', onPinClick(pinsNodesArray[i]));
-      }
-    };*/
 
   var onMainPinClick = function () {
     if (!isMapActive()) {
       getPageEnabled();
       getPinAddressToForm();
-      window.backend.load(successHandler, errorHandler);
+      window.backend.load(successHandler, popupHandler);
     }
   };
 
   getPageDisabled();
   getPinAddressToForm();
-
 
   mapPinMain.addEventListener('mousedown', function (downEvt) {
     downEvt.preventDefault();
@@ -207,7 +193,7 @@
     }
   };
 
-  var errorHandler = function (errorMessage) {
+  var popupHandler = function (message) {
     var node = document.createElement('div');
     node.style = 'z-index: 100; text-align: center; margin-left: -200px; background-color: #fefefe; border-radius: 10px; box-shadow: 0 30px 50px rgba(0, 0, 0, 0.7);';
     node.style.position = 'fixed';
@@ -219,7 +205,7 @@
     node.style.fontSize = '15px';
     node.style.color = 'red';
 
-    node.textContent = errorMessage;
+    node.textContent = message;
     document.body.insertAdjacentElement('afterbegin', node);
     document.addEventListener('click', function () {
       node.remove();
@@ -235,7 +221,7 @@
     mapPinsContainer: mapPinsContainer,
     currentPopup: currentPopup,
     closeCurrentPopup: closeCurrentPopup,
-    errorHandler: errorHandler,
+    popupHandler: popupHandler,
     successHandler: successHandler
   };
 })();

@@ -131,7 +131,13 @@
 
   var onSubmitClick = function (evt) {
     evt.preventDefault();
-    window.backend.save(new FormData(adForm), onResetButtonClick, window.map.errorHandler);
+    window.backend.save(new FormData(adForm), function () {
+      adForm.reset();
+      window.map.mapPinMain.style.left = window.constants.MAIN_PIN_START_X + 'px';
+      window.map.mapPinMain.style.top = window.constants.MAIN_PIN_START_Y + 'px';
+      window.map.getPinAddressToForm();
+      window.map.popupHandler('Данные отправлены успешно');
+    }, window.map.popupHandler);
   };
 
   adForm.addEventListener('submit', onSubmitClick);
