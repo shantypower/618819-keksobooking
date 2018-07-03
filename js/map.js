@@ -8,11 +8,6 @@
   var mapPinMain = document.querySelector('.map__pin--main');
   var currentPopup = null;
 
-  var similarAdverts = [];
-  for (var j = 0; j <= window.constants.NUMBER_OF_ADVERTS - 1; j++) {
-    similarAdverts[j] = window.getSimilarAdvert();
-  }
-
   var getPageEnabled = function () {
     map.classList.remove('map--faded');
     window.form.getFormEnabled();
@@ -42,13 +37,11 @@
 
   var createPinsArray = function (arrAdverts) {
     var pinsArray = [];
-    for (var i = 0; i < similarAdverts.length; i++) {
+    for (var i = 0; i < arrAdverts.length; i++) {
       pinsArray.push(window.createMapPin(arrAdverts[i]));
     }
     return pinsArray;
   };
-
-  var pinsNodesArray = createPinsArray(similarAdverts);
 
   var createPinsNodes = function (arrPins) {
     var fragment = document.createDocumentFragment();
@@ -102,24 +95,16 @@
     closePopup.querySelector('.popup__close').addEventListener('click', onCloseBtnClick);
   };
 
-  var onPinClicks = function () {
-    for (var i = 0; i < pinsNodesArray.length; i++) {
-      pinsNodesArray[i].addEventListener('click', onPinClick(similarAdverts[i]));
-    }
-  };
-
   var onMainPinClick = function () {
     if (!isMapActive()) {
       getPageEnabled();
       getPinAddressToForm();
-      addPinsToMap(createPinsNodes(pinsNodesArray));
-      onPinClicks();
+      window.backend.load(successHandler, errorHandler);
     }
   };
 
   getPageDisabled();
   getPinAddressToForm();
-
 
   mapPinMain.addEventListener('mousedown', function (downEvt) {
     downEvt.preventDefault();
@@ -199,6 +184,34 @@
     document.addEventListener('mouseup', onMouseUp);
   });
 
+  var successHandler = function (data) {
+    var pinsNodesArray = createPinsArray(data);
+    var pinsNodes = createPinsNodes(pinsNodesArray);
+    addPinsToMap(pinsNodes);
+    for (var i = 0; i < pinsNodesArray.length; i++) {
+      pinsNodesArray[i].addEventListener('click', onPinClick(data[i]));
+    }
+  };
+
+  var errorHandler = function (message) {
+    var node = document.createElement('div');
+    node.style = 'z-index: 100; text-align: center; margin-left: -200px; background-color: #fefefe; border-radius: 10px; box-shadow: 0 30px 50px rgba(0, 0, 0, 0.7);';
+    node.style.position = 'fixed';
+    node.style.top = '30px';
+    node.style.left = '50%';
+    node.style.width = '400px';
+    node.style.minHeight = '150px';
+    node.style.padding = '18px 25px 25px 25px';
+    node.style.fontSize = '15px';
+    node.style.color = 'red';
+
+    node.textContent = message;
+    document.body.insertAdjacentElement('afterbegin', node);
+    document.addEventListener('click', function () {
+      node.remove();
+    });
+  };
+
   window.map = {
     calculatePinAddress: calculatePinAddress,
     getPinAddressToForm: getPinAddressToForm,
@@ -207,6 +220,8 @@
     mapPinMain: mapPinMain,
     mapPinsContainer: mapPinsContainer,
     currentPopup: currentPopup,
-    closeCurrentPopup: closeCurrentPopup
+    closeCurrentPopup: closeCurrentPopup,
+    errorHandler: errorHandler,
+    successHandler: successHandler
   };
 })();

@@ -13,6 +13,7 @@
   var adFormHeader = adForm.querySelector('.ad-form-header');
   var adFormElement = adForm.querySelectorAll('.ad-form__element');
   var addressInput = adForm.querySelector('#address');
+  var successPopup = document.querySelector('.success');
 
   var getFormDisabled = function () {
     adForm.classList.add('ad-form--disabled');
@@ -98,8 +99,8 @@
     }
   };
 
-  var onResetButtonClick = function (event) {
-    event.preventDefault();
+  var onResetButtonClick = function () {
+    //  event.preventDefault();
     removePins();
     if (window.map.currentPopup !== null) {
       window.map.closeCurrentPopup();
@@ -128,6 +129,20 @@
   };
 
   window.addEventListener('load', initiateValidation);
+
+  var onSubmitClick = function (evt) {
+    evt.preventDefault();
+    window.backend.save(new FormData(adForm), function () {
+      successPopup.classList.remove('hidden');
+      onResetButtonClick();
+      window.map.closeCurrentPopup();
+    }, window.map.errorHandler);
+  };
+
+  adForm.addEventListener('submit', onSubmitClick);
+  document.addEventListener('click', function () {
+    successPopup.classList.add('hidden');
+  });
 
   window.form = {
     getFormEnabled: getFormEnabled,
