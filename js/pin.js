@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  window.createMapPin = function (arrAdverts) {
+   var createMapPin = function (arrAdverts) {
     var mapPinTemplate = document.querySelector('#map__card').content.querySelector('.map__pin');
     var mapPin = mapPinTemplate.cloneNode(true);
     var pinIcon = mapPin.children[0];
@@ -10,4 +10,17 @@
     pinIcon.alt = arrAdverts.offer.title;
     return mapPin;
   };
+
+  var removePins = function () {
+    var mapPins = document.querySelector('.map__pins');
+    var allPins = mapPins.querySelectorAll('.map__pin:not(.map__pin--main)');
+    allPins.forEach(function (item) {
+      mapPins.removeChild(item);
+    });
+  };
+
+  window.pin = {
+    createMapPin: createMapPin,
+    removePins: removePins
+  }
 })();

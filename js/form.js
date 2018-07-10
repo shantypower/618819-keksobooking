@@ -100,17 +100,32 @@
   };
 
   var onResetButtonClick = function () {
-    //  event.preventDefault();
     removePins();
     if (window.map.currentPopup !== null) {
       window.map.closeCurrentPopup();
     }
     window.map.getPageDisabled();
     adForm.reset();
+    //setAnyFilter();
     window.map.mapPinMain.style.left = window.constants.MAIN_PIN_START_X + 'px';
     window.map.mapPinMain.style.top = window.constants.MAIN_PIN_START_Y + 'px';
     window.map.getPinAddressToForm();
   };
+/*
+  var setAnyFilter = function () {
+    var filter = document.querySelector('.map__filters');
+    var features = filter.querySelectorAll('input');
+    var anyValue = 'any';
+    filter.querySelector('#housing-type').value = anyValue;
+    filter.querySelector('#housing-price').value = anyValue;
+    filter.querySelector('#housing-guests').value = anyValue;
+    filter.querySelector('#housing-rooms').value = anyValue;
+    features.forEach(function (feature) {
+      if (feature.checked) {
+        feature.checked = false;
+      }
+    });
+  };*/
 
   var initiateValidation = function () {
     inputTitle.addEventListener('invalid', onInputChange);
@@ -140,7 +155,7 @@
   };
 
   adForm.addEventListener('submit', onSubmitClick);
-  document.addEventListener('click', function () {
+  successPopup.addEventListener('click', function () {
     successPopup.classList.add('hidden');
   });
 
