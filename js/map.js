@@ -48,8 +48,14 @@
 
   var createPinsNodes = function (arrPins) {
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < arrPins.length; i++) {
-      fragment.appendChild(arrPins[i]);
+    if (arrPins.length > 5) {
+      for (var i = 0; i < 5; i++) {
+        fragment.appendChild(arrPins[i]);
+      }
+    } else if (arrPins.length < 5) {
+      arrPins.forEach(function (item) {
+        fragment.appendChild(item);
+      });
     }
     return fragment;
   };
