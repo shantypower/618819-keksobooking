@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-   var createMapPin = function (arrAdverts) {
+  var createMapPin = function (arrAdverts) {
     var mapPinTemplate = document.querySelector('#map__card').content.querySelector('.map__pin');
     var mapPin = mapPinTemplate.cloneNode(true);
     var pinIcon = mapPin.children[0];
@@ -22,5 +22,5 @@
   window.pin = {
     createMapPin: createMapPin,
     removePins: removePins
-  }
+  };
 })();

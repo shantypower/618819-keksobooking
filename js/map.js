@@ -6,9 +6,9 @@
   var allFilters = map.querySelector('.map__filters');
 
   var mapPinsContainer = document.querySelector('.map__pins');
+  var mapPin = document.querySelector('.map__pin');
   var mapPinMain = document.querySelector('.map__pin--main');
   var currentPopup = null;
-  var pins = [];
 
   var getPageEnabled = function () {
     map.classList.remove('map--faded');
@@ -79,6 +79,10 @@
   };
 
   var onPinClick = function (advert) {
+    if (!mapPin.classList.contains('map__pin--main')) {
+      mapPin.classList.add('map__pin--active');
+    }
+
     return function () {
       if (currentPopup !== null) {
         closeCurrentPopup();
