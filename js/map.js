@@ -82,7 +82,6 @@
     if (!mapPin.classList.contains('map__pin--main')) {
       mapPin.classList.add('map__pin--active');
     }
-
     return function () {
       if (currentPopup !== null) {
         closeCurrentPopup();
