@@ -188,8 +188,8 @@
   });
 
   var successHandler = function (data) {
+    window.pins = data;
     var pinsNodesArray = createPinsArray(data);
-   // pins = data;
     var pinsNodes = createPinsNodes(pinsNodesArray);
     addPinsToMap(pinsNodes);
     for (var i = 0; i < pinsNodesArray.length; i++) {
@@ -223,7 +223,7 @@
     }
     window.pin.removePins();
 
-    addPinsToMap(createPinsNodes(newPins));
+    addPinsToMap(createPinsNodes(createPinsArray(newPins)));
   };
 
   var onChangeFilter = window.util.debounce(function () {
@@ -241,6 +241,6 @@
     closeCurrentPopup: closeCurrentPopup,
     errorHandler: errorHandler,
     successHandler: successHandler,
-    pins, pins
+   // pins, pins
   };
 })();

@@ -54,7 +54,7 @@
       });
     };
 
-    var sortedArray = window.map.pins.filter(checkTypeField).filter(checkPriceField).filter(checkRoomsField).filter(checkGuestsField).filter(checkFeaturesField);
+    var sortedArray = window.pins.filter(checkTypeField).filter(checkPriceField).filter(checkRoomsField).filter(checkGuestsField).filter(checkFeaturesField);
     return sortedArray;
   };
 })();
