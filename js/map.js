@@ -41,6 +41,7 @@
     var pinsArray = [];
     for (var i = 0; i < arrAdverts.length; i++) {
       pinsArray.push(window.pin.createMapPin(arrAdverts[i]));
+      pinsArray[i].addEventListener('click', onPinClick(arrAdverts[i]));
     }
     return pinsArray;
   };
@@ -192,9 +193,6 @@
     var pinsNodesArray = createPinsArray(data);
     var pinsNodes = createPinsNodes(pinsNodesArray);
     addPinsToMap(pinsNodes);
-    for (var i = 0; i < pinsNodesArray.length; i++) {
-      pinsNodesArray[i].addEventListener('click', onPinClick(data[i]));
-    }
   };
 
   var errorHandler = function (message) {
@@ -222,7 +220,6 @@
       closeCurrentPopup();
     }
     window.pin.removePins();
-
     addPinsToMap(createPinsNodes(createPinsArray(newPins)));
   };
 
@@ -241,6 +238,5 @@
     closeCurrentPopup: closeCurrentPopup,
     errorHandler: errorHandler,
     successHandler: successHandler,
-   // pins, pins
   };
 })();
