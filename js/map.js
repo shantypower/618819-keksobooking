@@ -8,7 +8,8 @@
   var mapPinsContainer = document.querySelector('.map__pins');
   var mapPin = document.querySelector('.map__pin');
   var mapPinMain = document.querySelector('.map__pin--main');
-  var currentPopup = null;
+  var mapCard = document.querySelector('.map__card');
+
 
   var getPageEnabled = function () {
     map.classList.remove('map--faded');
@@ -72,9 +73,7 @@
   };
 
   var closeCurrentPopup = function () {
-    currentPopup.remove();
-    currentPopup = null;
-
+    mapCard.remove();
     document.removeEventListener('click', onCloseBtnClick);
   };
 
@@ -87,12 +86,12 @@
       if (!evt.currentTarget.classList.contains('map__pin--main')) {
         evt.currentTarget.classList.add('map__pin--active');
       }
-      if (currentPopup !== null) {
+      if (mapCard) {
         closeCurrentPopup();
       }
-      currentPopup = window.createSimilarAdvert(advert);
-      onCloseAdvertClick(currentPopup);
-      addAdvertToMap(currentPopup);
+      mapCard = window.createSimilarAdvert(advert);
+      onCloseAdvertClick(mapCard);
+      addAdvertToMap(mapCard);
     };
   };
 
@@ -249,7 +248,7 @@
     onKeyEscPress: onKeyEscPress,
     mapPinMain: mapPinMain,
     mapPinsContainer: mapPinsContainer,
-    currentPopup: currentPopup,
+    mapCard: mapCard,
     closeCurrentPopup: closeCurrentPopup,
     errorHandler: errorHandler,
     successHandler: successHandler,
