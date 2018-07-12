@@ -82,7 +82,11 @@
     if (!mapPin.classList.contains('map__pin--main')) {
       mapPin.classList.add('map__pin--active');
     }
-    return function () {
+    return function (evt) {
+      getPinDeactivated();
+      if (!evt.currentTarget.classList.contains('map__pin--main')) {
+        evt.currentTarget.classList.add('map__pin--active');
+      }
       if (currentPopup !== null) {
         closeCurrentPopup();
       }
@@ -92,13 +96,22 @@
     };
   };
 
+  var getPinDeactivated = function () {
+    var mapPinActive = document.querySelector('.map__pin--active');
+    if (mapPinActive) {
+      mapPinActive.classList.remove('map__pin--active');
+    }
+  }
+
   var onCloseBtnClick = function () {
     closeCurrentPopup();
+    getPinDeactivated();
   };
 
   var onKeyEscPress = function (evt) {
     if (evt.keyCode === window.constants.ESC_KEYCODE) {
       closeCurrentPopup();
+      getPinDeactivated();
     }
     document.removeEventListener('keydown', onKeyEscPress);
   };
