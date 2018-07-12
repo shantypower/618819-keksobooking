@@ -5,6 +5,7 @@
     NUMBER_OF_ADVERTS: 8,
     LOAD_TIME: 100000,
     SUCCESS_STATUS: 200,
+    DEBOUNCE_INTERVAL: 300,
     AVATARS: ['01', '02', '03', '04', '05', '06', '07', '08'],
     OFFER_TITLES: [
       'Большая уютная квартира',

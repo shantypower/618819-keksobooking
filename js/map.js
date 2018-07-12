@@ -3,10 +3,13 @@
 (function () {
   var map = document.querySelector('.map');
   var mapFilters = document.querySelector('.map__filters-container');
+  var allFilters = map.querySelector('.map__filters');
 
   var mapPinsContainer = document.querySelector('.map__pins');
+  var mapPin = document.querySelector('.map__pin');
   var mapPinMain = document.querySelector('.map__pin--main');
-  var currentPopup = null;
+  var mapCard = document.querySelector('.map__card');
+
 
   var getPageEnabled = function () {
     map.classList.remove('map--faded');
@@ -38,15 +41,22 @@
   var createPinsArray = function (arrAdverts) {
     var pinsArray = [];
     for (var i = 0; i < arrAdverts.length; i++) {
-      pinsArray.push(window.createMapPin(arrAdverts[i]));
+      pinsArray.push(window.pin.createMapPin(arrAdverts[i]));
+      pinsArray[i].addEventListener('click', onPinClick(arrAdverts[i]));
     }
     return pinsArray;
   };
 
   var createPinsNodes = function (arrPins) {
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < arrPins.length; i++) {
-      fragment.appendChild(arrPins[i]);
+    if (arrPins.length > 5) {
+      for (var i = 0; i < 5; i++) {
+        fragment.appendChild(arrPins[i]);
+      }
+    } else if (arrPins.length < 5) {
+      arrPins.forEach(function (item) {
+        fragment.appendChild(item);
+      });
     }
     return fragment;
   };
@@ -63,30 +73,37 @@
   };
 
   var closeCurrentPopup = function () {
-    currentPopup.remove();
-    currentPopup = null;
-
+    mapCard.remove();
     document.removeEventListener('click', onCloseBtnClick);
   };
 
   var onPinClick = function (advert) {
-    return function () {
-      if (currentPopup !== null) {
+    if (!mapPin.classList.contains('map__pin--main')) {
+      mapPin.classList.add('map__pin--active');
+    }
+    return function (evt) {
+      window.pin.getPinDeactivated();
+      if (!evt.currentTarget.classList.contains('map__pin--main')) {
+        evt.currentTarget.classList.add('map__pin--active');
+      }
+      if (mapCard) {
         closeCurrentPopup();
       }
-      currentPopup = window.createSimilarAdvert(advert);
-      onCloseAdvertClick(currentPopup);
-      addAdvertToMap(currentPopup);
+      mapCard = window.createSimilarAdvert(advert);
+      onCloseAdvertClick(mapCard);
+      addAdvertToMap(mapCard);
     };
   };
 
   var onCloseBtnClick = function () {
     closeCurrentPopup();
+    window.pin.getPinDeactivated();
   };
 
   var onKeyEscPress = function (evt) {
     if (evt.keyCode === window.constants.ESC_KEYCODE) {
       closeCurrentPopup();
+      window.pin.getPinDeactivated();
     }
     document.removeEventListener('keydown', onKeyEscPress);
   };
@@ -100,6 +117,7 @@
       getPageEnabled();
       getPinAddressToForm();
       window.backend.load(successHandler, errorHandler);
+      allFilters.addEventListener('change', onChangeFilter);
     }
   };
 
@@ -185,12 +203,10 @@
   });
 
   var successHandler = function (data) {
+    window.pins = data;
     var pinsNodesArray = createPinsArray(data);
     var pinsNodes = createPinsNodes(pinsNodesArray);
     addPinsToMap(pinsNodes);
-    for (var i = 0; i < pinsNodesArray.length; i++) {
-      pinsNodesArray[i].addEventListener('click', onPinClick(data[i]));
-    }
   };
 
   var errorHandler = function (message) {
@@ -212,6 +228,18 @@
     });
   };
 
+  var updatePins = function (newPins) {
+    if (mapCard) {
+      closeCurrentPopup();
+    }
+    window.pin.removePins();
+    addPinsToMap(createPinsNodes(createPinsArray(newPins)));
+  };
+
+  var onChangeFilter = window.util.debounce(function () {
+    updatePins(window.sortPins());
+  });
+
   window.map = {
     calculatePinAddress: calculatePinAddress,
     getPinAddressToForm: getPinAddressToForm,
@@ -219,9 +247,9 @@
     onKeyEscPress: onKeyEscPress,
     mapPinMain: mapPinMain,
     mapPinsContainer: mapPinsContainer,
-    currentPopup: currentPopup,
+    mapCard: mapCard,
     closeCurrentPopup: closeCurrentPopup,
     errorHandler: errorHandler,
-    successHandler: successHandler
+    successHandler: successHandler,
   };
 })();

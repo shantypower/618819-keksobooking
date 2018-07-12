@@ -100,9 +100,9 @@
   };
 
   var onResetButtonClick = function () {
-    //  event.preventDefault();
+    var mapCard = document.querySelector('.map__card');
     removePins();
-    if (window.map.currentPopup !== null) {
+    if (mapCard) {
       window.map.closeCurrentPopup();
     }
     window.map.getPageDisabled();
@@ -140,7 +140,7 @@
   };
 
   adForm.addEventListener('submit', onSubmitClick);
-  document.addEventListener('click', function () {
+  successPopup.addEventListener('click', function () {
     successPopup.classList.add('hidden');
   });
 
