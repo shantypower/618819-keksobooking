@@ -229,7 +229,6 @@
   };
 
   var updatePins = function (newPins) {
-    var mapCard = document.querySelector('.map__card');
     if (mapCard) {
       closeCurrentPopup();
     }
