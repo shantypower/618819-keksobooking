@@ -100,8 +100,9 @@
   };
 
   var onResetButtonClick = function () {
+    var mapCard = document.querySelector('.map__card');
     removePins();
-    if (window.map.currentPopup !== null) {
+    if (mapCard) {
       window.map.closeCurrentPopup();
     }
     window.map.getPageDisabled();
