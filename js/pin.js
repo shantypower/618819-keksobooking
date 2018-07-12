@@ -19,8 +19,16 @@
     });
   };
 
+  var getPinDeactivated = function () {
+    var mapPinActive = document.querySelector('.map__pin--active');
+    if (mapPinActive) {
+      mapPinActive.classList.remove('map__pin--active');
+    }
+  }
+
   window.pin = {
     createMapPin: createMapPin,
-    removePins: removePins
+    removePins: removePins,
+    getPinDeactivated: getPinDeactivated
   };
 })();

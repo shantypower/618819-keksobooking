@@ -83,7 +83,7 @@
       mapPin.classList.add('map__pin--active');
     }
     return function (evt) {
-      getPinDeactivated();
+      window.pin.getPinDeactivated();
       if (!evt.currentTarget.classList.contains('map__pin--main')) {
         evt.currentTarget.classList.add('map__pin--active');
       }
@@ -96,22 +96,15 @@
     };
   };
 
-  var getPinDeactivated = function () {
-    var mapPinActive = document.querySelector('.map__pin--active');
-    if (mapPinActive) {
-      mapPinActive.classList.remove('map__pin--active');
-    }
-  }
-
   var onCloseBtnClick = function () {
     closeCurrentPopup();
-    getPinDeactivated();
+    window.pin.getPinDeactivated();
   };
 
   var onKeyEscPress = function (evt) {
     if (evt.keyCode === window.constants.ESC_KEYCODE) {
       closeCurrentPopup();
-      getPinDeactivated();
+      window.pin.getPinDeactivated();
     }
     document.removeEventListener('keydown', onKeyEscPress);
   };
