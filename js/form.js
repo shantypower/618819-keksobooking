@@ -110,6 +110,8 @@
     window.map.mapPinMain.style.left = window.constants.MAIN_PIN_START_X + 'px';
     window.map.mapPinMain.style.top = window.constants.MAIN_PIN_START_Y + 'px';
     window.map.getPinAddressToForm();
+    window.resetAvatar();
+    window.resetPhotos();
   };
 
   var initiateValidation = function () {
