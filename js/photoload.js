@@ -6,7 +6,6 @@
   var fileChooser = document.querySelector('.ad-form__input');
   var photoContainer = document.querySelector('.ad-form__photo-container');
   var photoBoxTemplate = photoContainer.querySelector('.ad-form__photo--template');
-  var photos = photoContainer.querySelectorAll('.ad-form__photo:not(.ad-form__photo--template)');
 
   var onPhotoChooserLoad = function () {
     var loadedFiles = fileChooser.files;
