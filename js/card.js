@@ -40,23 +40,23 @@
     advertCapacity.textContent = advert.offer.rooms + ' комнаты для ' + advert.offer.guests + ' гостей';
     advertTime.textContent = 'Заезд после ' + advert.offer.checkin + ', выезд до ' + advert.offer.checkout;
 
-    for (var i = 0; i < advert.offer.features.length; i++) {
-      advertFeatures.querySelector('.popup__feature--' + advert.offer.features[i]).textContent = advert.offer.features[i];
-    }
+    advert.offer.features.forEach(function(element) {
+      advertFeatures.querySelector('.popup__feature--' + element).textContent = element;
+    })
 
-    for (i = 0; i < advertFeatures.children.length; i++) {
-      if (advertFeatures.children[i].textContent === '') {
-        advertFeatures.removeChild(advertFeatures.children[i]);
+    Array.prototype.slice.apply(advertFeatures.children).forEach(function(element) {
+      if (element.textContent === '') {
+        advertFeatures.removeChild(element);
       }
-    }
+    });
 
     advertDescription.textContent = advert.offer.description;
 
-    for (i = 0; i < advert.offer.photos.length; i++) {
+    advert.offer.photos.forEach(function(element) {
       var photo = advertPhotos.children[0].cloneNode();
-      photo.src = advert.offer.photos[i];
+      photo.src = element;
       advertPhotos.appendChild(photo);
-    }
+    });
 
     advertPhotos.removeChild(advertPhotos.children[0]);
     advertAvatar.src = advert.author.avatar;

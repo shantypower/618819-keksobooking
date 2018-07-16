@@ -1,8 +1,8 @@
 'use strict';
 
 (function () {
-  var URL = 'https://js.dump.academy/keksobooking';
-  // var URL = 'http://127.0.0.1:5000/api';
+  //var URL = 'https://js.dump.academy/keksobooking';
+  var URL = 'http://127.0.0.1:5000/api';
   var DATA = URL + '/data';
   var LOAD_TIME = 100000;
   var SUCCESS_STATUS = 200;
