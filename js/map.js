@@ -9,7 +9,14 @@
   var mapPin = document.querySelector('.map__pin');
   var mapPinMain = document.querySelector('.map__pin--main');
   var mapCard = document.querySelector('.map__card');
-
+  var MainPin = {
+    WIDTH: 65,
+    HEIGHT: 65,
+    TAIL_HEIGHT: 22
+  };
+  var TOP_LIMIT = 130;
+  var BOTTOM_LIMIT = 630;
+  var ESC_KEYCODE = 27;
 
   var getPageEnabled = function () {
     map.classList.remove('map--faded');
@@ -26,10 +33,10 @@
   };
 
   var calculatePinAddress = function () {
-    var pinX = Math.round(parseInt(mapPinMain.style.left, 10) + window.constants.MAIN_PIN_WIDTH / 2);
-    var pinY = Math.round(parseInt(mapPinMain.style.top, 10) + window.constants.MAIN_PIN_WIDTH / 2);
+    var pinX = Math.round(parseInt(mapPinMain.style.left, 10) + MainPin.WIDTH / 2);
+    var pinY = Math.round(parseInt(mapPinMain.style.top, 10) + MainPin.WIDTH / 2);
     if (isMapActive()) {
-      pinY += Math.round(window.constants.MAIN_PIN_HEIGHT / 2 + window.constants.MAIN_PIN_TAIL_HEIGHT);
+      pinY += Math.round(MainPin.HEIGHT / 2 + MainPin.TAIL_HEIGHT);
     }
     return pinX + ', ' + pinY;
   };
@@ -101,7 +108,7 @@
   };
 
   var onKeyEscPress = function (evt) {
-    if (evt.keyCode === window.constants.ESC_KEYCODE) {
+    if (evt.keyCode === ESC_KEYCODE) {
       closeCurrentPopup();
       window.pin.getPinDeactivated();
     }
@@ -137,10 +144,10 @@
     var onMouseMove = function (moveEvt) {
       var mapPinParent = mapPinMain.offsetParent;
       var limits = {
-        top: window.constants.TOP_LIMIT - window.constants.MAIN_PIN_HEIGHT - window.constants.MAIN_PIN_TAIL_HEIGHT,
-        bottom: window.constants.BOTTOM_LIMIT - window.constants.MAIN_PIN_HEIGHT - window.constants.MAIN_PIN_TAIL_HEIGHT,
-        left: mapPinParent.offsetLeft - window.constants.MAIN_PIN_WIDTH / 2,
-        right: mapPinParent.offsetWidth - window.constants.MAIN_PIN_WIDTH / 2
+        top: TOP_LIMIT - MainPin.HEIGHT - MainPin.TAIL_HEIGHT,
+        bottom: BOTTOM_LIMIT - MainPin.HEIGHT - MainPin.TAIL_HEIGHT,
+        left: mapPinParent.offsetLeft - MainPin.WIDTH / 2,
+        right: mapPinParent.offsetWidth - MainPin.WIDTH / 2
       };
 
       moveEvt.preventDefault();

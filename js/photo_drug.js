@@ -20,7 +20,7 @@
     }
   });
 
-  photoContainer.addEventListener('dragend', function (evt) {
+  photoContainer.addEventListener('dragend', function () {
     return false;
   });
   photoContainer.addEventListener('dragover', function (evt) {

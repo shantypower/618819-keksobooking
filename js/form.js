@@ -14,6 +14,12 @@
   var adFormElement = adForm.querySelectorAll('.ad-form__element');
   var addressInput = adForm.querySelector('#address');
   var successPopup = document.querySelector('.success');
+  var MinPrices = {
+    'bungalo': 0,
+    'flat': 1000,
+    'house': 5000,
+    'palace': 100000
+  };
 
   var getFormDisabled = function () {
     adForm.classList.add('ad-form--disabled');
@@ -32,7 +38,7 @@
   };
 
   var onSelectHouseTypeChange = function () {
-    var minPrice = window.constants.MIN_PRICES[selectHouseType.value];
+    var minPrice = MinPrices[selectHouseType.value];
     inputPrice.setAttribute('min', minPrice);
     inputPrice.setAttribute('placeholder', minPrice);
   };
@@ -100,6 +106,8 @@
   };
 
   var onResetButtonClick = function () {
+    var MAIN_PIN_START_X = 570;
+    var MAIN_PIN_START_Y = 375;
     var mapCard = document.querySelector('.map__card');
     removePins();
     if (mapCard) {
@@ -107,8 +115,8 @@
     }
     window.map.getPageDisabled();
     adForm.reset();
-    window.map.mapPinMain.style.left = window.constants.MAIN_PIN_START_X + 'px';
-    window.map.mapPinMain.style.top = window.constants.MAIN_PIN_START_Y + 'px';
+    window.map.mapPinMain.style.left = MAIN_PIN_START_X + 'px';
+    window.map.mapPinMain.style.top = MAIN_PIN_START_Y + 'px';
     window.map.getPinAddressToForm();
     window.resetAvatar();
     window.resetPhotos();

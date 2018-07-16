@@ -2,6 +2,7 @@
 
 (function () {
   window.debounce = function (fun) {
+    var DEBOUNCE_INTERVAL = 300;
     var lastTimeout = null;
     return function () {
       var args = arguments;
@@ -10,7 +11,7 @@
       }
       lastTimeout = window.setTimeout(function () {
         fun.apply(null, args);
-      }, window.constants.DEBOUNCE_INTERVAL);
+      }, DEBOUNCE_INTERVAL);
     };
   };
 

@@ -4,12 +4,14 @@
   var URL = 'https://js.dump.academy/keksobooking';
   // var URL = 'http://127.0.0.1:5000/api';
   var DATA = URL + '/data';
+  var LOAD_TIME = 100000;
+  var SUCCESS_STATUS = 200;
 
   var load = function (onLoad, onError) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
     xhr.addEventListener('load', function () {
-      if (xhr.status === window.constants.SUCCESS_STATUS) {
+      if (xhr.status === SUCCESS_STATUS) {
         onLoad(xhr.response);
       } else {
         onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
@@ -19,7 +21,7 @@
       onError('Произошла ошибка соединения');
     });
     xhr.addEventListener('timeout', function () {
-      onError('Запрос не успел выполниться за ' + window.constants.LOAD_TIME + 'мс');
+      onError('Запрос не успел выполниться за ' + LOAD_TIME + 'мс');
     });
 
     xhr.open('GET', DATA);
@@ -30,7 +32,7 @@
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
     xhr.addEventListener('load', function () {
-      if (xhr.status === window.constants.SUCCESS_STATUS) {
+      if (xhr.status === SUCCESS_STATUS) {
         onLoad(xhr.response);
       } else {
         onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
@@ -40,7 +42,7 @@
       onError('Произошла ошибка соединения');
     });
     xhr.addEventListener('timeout', function () {
-      onError('Запрос не успел выполниться за ' + window.constants.LOAD_TIME + 'мс');
+      onError('Запрос не успел выполниться за ' + LOAD_TIME + 'мс');
     });
 
     xhr.open('POST', URL);
