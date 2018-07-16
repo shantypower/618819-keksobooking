@@ -236,7 +236,7 @@
     addPinsToMap(createPinsNodes(createPinsArray(newPins)));
   };
 
-  var onChangeFilter = window.util.debounce(function () {
+  var onChangeFilter = window.debounce(function () {
     updatePins(window.sortPins());
   });
 

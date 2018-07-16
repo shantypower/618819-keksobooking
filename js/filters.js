@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var PRICE = {
+  var Price = {
     MIN: 10000,
     MAX: 50000
   };
@@ -23,13 +23,13 @@
       switch (priceFilter.value) {
 
         case 'low':
-          return advert.offer.price < PRICE.MIN;
+          return advert.offer.price < Price.MIN;
 
         case 'middle':
-          return advert.offer.price > PRICE.MIN && advert.offer.price < PRICE.MAX;
+          return advert.offer.price > Price.MIN && advert.offer.price < Price.MAX;
 
         case 'high':
-          return advert.offer.price > PRICE.MAX;
+          return advert.offer.price > Price.MAX;
 
         default:
           return true;
