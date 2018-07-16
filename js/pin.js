@@ -1,9 +1,10 @@
 'use strict';
 
 (function () {
+  var PIN_WIDTH = 50;
+  var PIN_HEIGHT = 70;
+  
   var createMapPin = function (arrAdverts) {
-    var PIN_WIDTH = 50;
-    var PIN_HEIGHT = 70;
     var mapPinTemplate = document.querySelector('#map__card').content.querySelector('.map__pin');
     var mapPin = mapPinTemplate.cloneNode(true);
     var pinIcon = mapPin.children[0];

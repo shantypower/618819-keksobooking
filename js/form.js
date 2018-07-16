@@ -20,6 +20,8 @@
     'house': 5000,
     'palace': 100000
   };
+  var MAIN_PIN_START_X = 570;
+  var MAIN_PIN_START_Y = 375;
 
   var getFormDisabled = function () {
     adForm.classList.add('ad-form--disabled');
@@ -27,9 +29,6 @@
     adFormElement.forEach(function (element) {
       element.disabled = true;
     });
-  //  for (var i = 0; i < adFormElement.length; i++) {
-  //    adFormElement[i].disabled = true;
-  //  }
   };
 
   var getFormEnabled = function () {
@@ -37,10 +36,7 @@
     adFormHeader.disabled = false;
     adFormElement.forEach(function (element) {
       element.removeAttribute('disabled');
-    })
-  //  for (var t = 0; t < adFormElement.length; t++) {
-  //    adFormElement[t].removeAttribute('disabled');
-  //  }
+    });
   };
 
   var onSelectHouseTypeChange = function () {
@@ -113,8 +109,6 @@
   };
 
   var onResetButtonClick = function () {
-    var MAIN_PIN_START_X = 570;
-    var MAIN_PIN_START_Y = 375;
     var mapCard = document.querySelector('.map__card');
     removePins();
     if (mapCard) {

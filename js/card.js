@@ -40,11 +40,11 @@
     advertCapacity.textContent = advert.offer.rooms + ' комнаты для ' + advert.offer.guests + ' гостей';
     advertTime.textContent = 'Заезд после ' + advert.offer.checkin + ', выезд до ' + advert.offer.checkout;
 
-    advert.offer.features.forEach(function(element) {
+    advert.offer.features.forEach(function (element) {
       advertFeatures.querySelector('.popup__feature--' + element).textContent = element;
-    })
+    });
 
-    Array.prototype.slice.apply(advertFeatures.children).forEach(function(element) {
+    Array.prototype.slice.apply(advertFeatures.children).forEach(function (element) {
       if (element.textContent === '') {
         advertFeatures.removeChild(element);
       }
@@ -52,7 +52,7 @@
 
     advertDescription.textContent = advert.offer.description;
 
-    advert.offer.photos.forEach(function(element) {
+    advert.offer.photos.forEach(function (element) {
       var photo = advertPhotos.children[0].cloneNode();
       photo.src = element;
       advertPhotos.appendChild(photo);
