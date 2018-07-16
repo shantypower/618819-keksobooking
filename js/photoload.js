@@ -36,6 +36,7 @@
   var renderPreview = function (link) {
     var previewElement = document.createElement('div');
     previewElement.classList.add('ad-form__photo');
+    previewElement.draggable = true;
     previewElement.innerHTML = '<img src="" width="60" height="55" alt="Фото помещения">';
     previewElement.querySelector('img').src = link;
     return previewElement;
