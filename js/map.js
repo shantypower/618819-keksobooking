@@ -47,10 +47,10 @@
 
   var createPinsArray = function (arrAdverts) {
     var pinsArray = [];
-    for (var i = 0; i < arrAdverts.length; i++) {
-      pinsArray.push(window.pin.createMapPin(arrAdverts[i]));
-      pinsArray[i].addEventListener('click', onPinClick(arrAdverts[i]));
-    }
+    arrAdverts.forEach( function (element, i) {
+      pinsArray.push(window.pin.createMapPin(element));
+      pinsArray[i].addEventListener('click', onPinClick(element));
+    })
     return pinsArray;
   };
 

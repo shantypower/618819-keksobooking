@@ -24,17 +24,23 @@
   var getFormDisabled = function () {
     adForm.classList.add('ad-form--disabled');
     adFormHeader.disabled = true;
-    for (var i = 0; i < adFormElement.length; i++) {
-      adFormElement[i].disabled = true;
-    }
+    adFormElement.forEach(function (element) {
+      element.disabled = true;
+    });
+  //  for (var i = 0; i < adFormElement.length; i++) {
+  //    adFormElement[i].disabled = true;
+  //  }
   };
 
   var getFormEnabled = function () {
     adForm.classList.remove('ad-form--disabled');
     adFormHeader.disabled = false;
-    for (var t = 0; t < adFormElement.length; t++) {
-      adFormElement[t].removeAttribute('disabled');
-    }
+    adFormElement.forEach(function (element) {
+      element.removeAttribute('disabled');
+    })
+  //  for (var t = 0; t < adFormElement.length; t++) {
+  //    adFormElement[t].removeAttribute('disabled');
+  //  }
   };
 
   var onSelectHouseTypeChange = function () {
@@ -98,6 +104,7 @@
 
   var removePins = function () {
     var pins = document.querySelectorAll('.map__pin');
+
     for (var i = pins.length - 1; i > 0; i--) {
       if (pins[i] !== window.map.mapPinMain) {
         window.map.mapPinsContainer.removeChild(pins[i]);
