@@ -3,7 +3,7 @@
 (function () {
   var PIN_WIDTH = 50;
   var PIN_HEIGHT = 70;
-  
+
   var createMapPin = function (arrAdverts) {
     var mapPinTemplate = document.querySelector('#map__card').content.querySelector('.map__pin');
     var mapPin = mapPinTemplate.cloneNode(true);
