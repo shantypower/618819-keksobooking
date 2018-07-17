@@ -3,44 +3,71 @@
 (function () {
   var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
-  var fileChooser = document.querySelector('.ad-form__input');
+  var fileChooser = document.querySelector('.ad-form-header__input');
+  var fileChooserApartment = document.querySelector('.ad-form__input');
+  var preview = document.querySelector('.ad-form-header__preview img');
   var photoContainer = document.querySelector('.ad-form__photo-container');
   var photoBoxTemplate = photoContainer.querySelector('.ad-form__photo--template');
+  var avatarDropZone = document.querySelector('.ad-form-header__drop-zone');
+  var photoDropZone = document.querySelector('.ad-form__drop-zone');
 
-  var onPhotoChooserLoad = function () {
-    var loadedFiles = fileChooser.files;
-    loadedFiles = Array.prototype.slice.call(loadedFiles, 0);
+  function showPhoto(inputFile, callback) {
+    var file = inputFile.files[0];
+    var fileName = file.name.toLowerCase();
 
-    loadedFiles.forEach(function (file) {
-      var fileName = file.name.toLowerCase();
-
-      var matches = FILE_TYPES.some(function (it) {
-        return fileName.endsWith(it);
-      });
-
-      if (matches) {
-        var reader = new FileReader();
-        reader.addEventListener('load', function (evt) {
-          if (photoBoxTemplate) {
-            photoBoxTemplate.style.display = 'none';
-          }
-          photoContainer.appendChild(renderPreview(evt.target.result));
-        });
-        reader.readAsDataURL(file);
-      }
+    var matches = FILE_TYPES.some(function (element) {
+      return fileName.endsWith(element);
     });
-  };
 
-  fileChooser.addEventListener('change', onPhotoChooserLoad);
+    if (matches) {
+      var reader = new FileReader();
+      reader.addEventListener('load', function () {
+        callback(reader.result);
+      });
+      reader.readAsDataURL(file);
+    }
+  }
+
+  function setAvatarLink(link) {
+    preview.src = link;
+  }
 
   var renderPreview = function (link) {
     var previewElement = document.createElement('div');
     previewElement.classList.add('ad-form__photo');
-    previewElement.draggable = true;
     previewElement.innerHTML = '<img src="" width="60" height="55" alt="Фото помещения">';
     previewElement.querySelector('img').src = link;
-    return previewElement;
+    photoContainer.appendChild(previewElement);
   };
+
+
+  ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(function (eventName) {
+    avatarDropZone.addEventListener(eventName, preventDefaults, false);
+  });
+
+  ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(function (eventName) {
+    photoDropZone.addEventListener(eventName, preventDefaults, false);
+  });
+
+  function preventDefaults(event) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+
+  avatarDropZone.addEventListener('drop', function (event) {
+    showPhoto(event.dataTransfer, setAvatarLink);
+  });
+  fileChooser.addEventListener('change', function () {
+    showPhoto(fileChooser, setAvatarLink);
+  });
+
+  photoDropZone.addEventListener('drop', function (event) {
+    showPhoto(event.dataTransfer, renderPreview);
+  });
+  fileChooserApartment.addEventListener('change', function () {
+    showPhoto(fileChooserApartment, renderPreview);
+  });
+
 
   window.resetPhotos = function () {
     while (photoContainer.lastChild.tagName === 'DIV') {
