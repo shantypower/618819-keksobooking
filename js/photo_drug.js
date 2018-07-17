@@ -2,48 +2,42 @@
 
 (function () {
   var photoContainer = document.querySelector('.ad-form__photo-container');
-  var photo = document.querySelector('.ad-form__photo-container img');
+  var photo = document.querySelector('.ad-form__photo');
   var photoDragged;
 
-  if (photo) {
-    photo.addEventListener('drag', function (evt) {
-      evt.preventDefault();
-      return false;
-    });
+  function isPhotoMoved(element) {
+    var rect = element.getBoundingClientRect();
+    return (element.clientX - rect.left) / (rect.right - rect.left) > 0.5;
   }
 
-  photoContainer.addEventListener('dragstart', function (evt) {
-    if (evt.target.closest('img')) {
-      evt.dataTransfer.effectAllowed = 'move';
-      evt.dataTransfer.setDragImage(evt.target, 35, 35);
-      photoDragged = evt.target;
+  var moveElement;
+
+  function onDragOver(evt) {
+    evt.preventDefault();
+    var target = evt.target;
+    var element = target.closest(".ad-form__photo");
+    if (element) {
+      photoContainer.insertBefore(moveElement, (isPhotoMoved(element) && element.nextSibling) || element );
     }
-  });
+  }
 
-  photoContainer.addEventListener('dragend', function () {
-    return false;
-  });
-  photoContainer.addEventListener('dragover', function (evt) {
+  function onDragEnd(evt) {
     evt.preventDefault();
-    return false;
-  });
+    photoContainer.removeEventListener("dragover", onDragOver);
+    photoContainer.removeEventListener("dragend", onDragEnd);
+  }
 
-  document.addEventListener('drop', function (evt) {
-    evt.preventDefault();
-    photoDragged.parentNode.removeChild(photoDragged);
-    evt.target.appendChild(photoDragged);
-    if (evt.stopPropagation) {
-      evt.stopPropagation();
+  function onDragStart(evt) {
+    var target = evt.target;
+    var element = target.closest(".ad-form__photo");
+    if (element) {
+      moveElement = element;
+      evt.dataTransfer.setData("text/html", moveElement.textContent);
+      photoContainer.addEventListener("dragover", onDragOver);
+      photoContainer.addEventListener("dragend", onDragEnd);
     }
-    return false;
-  });
+  }
 
-  photoContainer.addEventListener('dragenter', function (evt) {
-    evt.preventDefault();
-    return true;
-  });
+  photoContainer.addEventListener("dragstart", onDragStart);
 
-  photoContainer.addEventListener('dragleave', function (evt) {
-    evt.preventDefault();
-  });
 })();
