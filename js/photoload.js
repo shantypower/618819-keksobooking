@@ -2,6 +2,7 @@
 
 (function () {
   var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+  var DRUG_DROP_EVENTS = ['dragenter', 'dragover', 'dragleave', 'drop'];
 
   var fileChooser = document.querySelector('.ad-form-header__input');
   var fileChooserApartment = document.querySelector('.ad-form__input');
@@ -41,11 +42,11 @@
   };
 
 
-  ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(function (eventName) {
+  DRUG_DROP_EVENTS.forEach(function (eventName) {
     avatarDropZone.addEventListener(eventName, preventDefaults, false);
   });
 
-  ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(function (eventName) {
+  DRUG_DROP_EVENTS.forEach(function (eventName) {
     photoDropZone.addEventListener(eventName, preventDefaults, false);
   });
 
