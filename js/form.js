@@ -106,7 +106,7 @@
       if (element !== window.map.mapPinMain) {
         window.map.mapPinsContainer.removeChild(element);
       }
-    })
+    });
   };
 
   var onResetButtonClick = function () {
