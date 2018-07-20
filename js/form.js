@@ -102,11 +102,11 @@
   var removePins = function () {
     var pins = document.querySelectorAll('.map__pin');
 
-    for (var i = pins.length - 1; i > 0; i--) {
-      if (pins[i] !== window.map.mapPinMain) {
-        window.map.mapPinsContainer.removeChild(pins[i]);
+    pins.forEach(function (element) {
+      if (element !== window.map.mapPinMain) {
+        window.map.mapPinsContainer.removeChild(element);
       }
-    }
+    })
   };
 
   var onResetButtonClick = function () {
