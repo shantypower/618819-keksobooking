@@ -4,7 +4,6 @@
   var TOP_LIMIT = 130;
   var BOTTOM_LIMIT = 630;
   var ESC_KEYCODE = 27;
-  
   var MainPin = {
     WIDTH: 65,
     HEIGHT: 65,

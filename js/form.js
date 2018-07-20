@@ -3,7 +3,7 @@
 (function () {
   var MAIN_PIN_START_X = 570;
   var MAIN_PIN_START_Y = 375;
-  
+
   var adForm = document.querySelector('.ad-form');
   var inputTitle = adForm.querySelector('#title');
   var inputPrice = adForm.querySelector('#price');
@@ -66,7 +66,7 @@
     }
   };
 
-  function onSelectRoomsChange() {
+  var onSelectRoomsChange = function () {
     var selectedCapacity = Number(selectCapacity.value);
     var selectedRooms = Number(selectRooms.value);
     var errorMessage = '';
@@ -97,7 +97,7 @@
       }
     }
     selectCapacity.setCustomValidity(errorMessage);
-  }
+  };
 
   var removePins = function () {
     var pins = document.querySelectorAll('.map__pin');

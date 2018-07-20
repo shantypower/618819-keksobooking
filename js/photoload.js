@@ -11,9 +11,8 @@
   var avatarDropZone = document.querySelector('.ad-form-header__drop-zone');
   var photoDropZone = document.querySelector('.ad-form__drop-zone');
 
-  function showPhoto(inputFile, callback) {
+  var showPhoto = function (inputFile, callback) {
     var file = inputFile.files[0];
-    console.log(file);
     var fileName = file.name.toLowerCase();
 
     var matches = FILE_TYPES.some(function (element) {
@@ -27,11 +26,11 @@
       });
       reader.readAsDataURL(file);
     }
-  }
+  };
 
-  function setAvatarLink(link) {
+  var setAvatarLink = function (link) {
     preview.src = link;
-  }
+  };
 
   var renderPreview = function (link) {
     var previewElement = document.createElement('div');
@@ -50,10 +49,10 @@
     photoDropZone.addEventListener(eventName, preventDefaults, false);
   });
 
-  function preventDefaults(event) {
+  var preventDefaults = function (event) {
     event.preventDefault();
     event.stopPropagation();
-  }
+  };
 
   avatarDropZone.addEventListener('drop', function (event) {
     showPhoto(event.dataTransfer, setAvatarLink);
