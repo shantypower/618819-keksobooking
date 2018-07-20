@@ -1,6 +1,16 @@
 'use strict';
 
 (function () {
+  var TOP_LIMIT = 130;
+  var BOTTOM_LIMIT = 630;
+  var ESC_KEYCODE = 27;
+  
+  var MainPin = {
+    WIDTH: 65,
+    HEIGHT: 65,
+    TAIL_HEIGHT: 22
+  };
+
   var map = document.querySelector('.map');
   var mapFilters = document.querySelector('.map__filters-container');
   var allFilters = map.querySelector('.map__filters');
@@ -9,14 +19,6 @@
   var mapPin = document.querySelector('.map__pin');
   var mapPinMain = document.querySelector('.map__pin--main');
   var mapCard = document.querySelector('.map__card');
-  var MainPin = {
-    WIDTH: 65,
-    HEIGHT: 65,
-    TAIL_HEIGHT: 22
-  };
-  var TOP_LIMIT = 130;
-  var BOTTOM_LIMIT = 630;
-  var ESC_KEYCODE = 27;
 
   var getPageEnabled = function () {
     map.classList.remove('map--faded');
