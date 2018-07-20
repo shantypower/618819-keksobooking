@@ -1,6 +1,9 @@
 'use strict';
 
 (function () {
+  var MAIN_PIN_START_X = 570;
+  var MAIN_PIN_START_Y = 375;
+  
   var adForm = document.querySelector('.ad-form');
   var inputTitle = adForm.querySelector('#title');
   var inputPrice = adForm.querySelector('#price');
@@ -20,8 +23,6 @@
     'house': 5000,
     'palace': 100000
   };
-  var MAIN_PIN_START_X = 570;
-  var MAIN_PIN_START_Y = 375;
 
   var getFormDisabled = function () {
     adForm.classList.add('ad-form--disabled');

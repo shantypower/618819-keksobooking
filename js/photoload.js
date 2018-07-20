@@ -13,6 +13,7 @@
 
   function showPhoto(inputFile, callback) {
     var file = inputFile.files[0];
+    console.log(file);
     var fileName = file.name.toLowerCase();
 
     var matches = FILE_TYPES.some(function (element) {
