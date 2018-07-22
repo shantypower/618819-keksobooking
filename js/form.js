@@ -3,6 +3,7 @@
 (function () {
   var MAIN_PIN_START_X = 570;
   var MAIN_PIN_START_Y = 375;
+  var MAX_ROOMS_QUANTITY = 100;
 
   var adForm = document.querySelector('.ad-form');
   var inputTitle = adForm.querySelector('#title');
@@ -10,6 +11,7 @@
   var selectHouseType = adForm.querySelector('#type');
   var selectCheckIn = adForm.querySelector('#timein');
   var selectCheckOut = adForm.querySelector('#timeout');
+  var rooms = adForm.querySelector('select[name="rooms"]');
   var selectRooms = adForm.querySelector('#room_number');
   var selectCapacity = adForm.querySelector('#capacity');
   var resetButton = adForm.querySelector('.ad-form__reset');
@@ -17,6 +19,10 @@
   var adFormElement = adForm.querySelectorAll('.ad-form__element');
   var addressInput = adForm.querySelector('#address');
   var successPopup = document.querySelector('.success');
+  var selectedRooms = Number(selectRooms.value);
+  var selectedCapacity = Number(selectCapacity.value);
+  var capacityOptions = selectCapacity.children;
+  capacityOptions = Array.prototype.slice.call(capacityOptions, 0);
   var MinPrices = {
     'bungalo': 0,
     'flat': 1000,
@@ -66,10 +72,27 @@
     }
   };
 
+  var setMatchCapacity = function () {
+    var currentRoomsValue = +rooms.value;
+
+    if (currentRoomsValue === MAX_ROOMS_QUANTITY) {
+      capacityOptions.forEach(function (option) {
+        option.disabled = true;
+      });
+      capacityOptions[capacityOptions.length - 1].disabled = false;
+      capacityOptions[capacityOptions.length - 1].selected = true;
+    } else {
+      capacityOptions.forEach(function (option, i) {
+        option.disabled = i >= currentRoomsValue;
+      });
+      capacityOptions[0].selected = true;
+    }
+  };
+
   var onSelectRoomsChange = function () {
-    var selectedCapacity = Number(selectCapacity.value);
-    var selectedRooms = Number(selectRooms.value);
     var errorMessage = '';
+    setMatchCapacity();
+
     switch (selectedRooms) {
       case (1): {
         if (selectedCapacity > 1 || selectedCapacity === 0) {
@@ -128,7 +151,6 @@
     inputTitle.addEventListener('invalid', onInputChange);
     inputPrice.addEventListener('input', onInputChange);
     inputPrice.addEventListener('invalid', onInputChange);
-    selectCapacity.addEventListener('change', onSelectRoomsChange);
     selectHouseType.addEventListener('change', onSelectHouseTypeChange);
     selectRooms.addEventListener('change', onSelectRoomsChange);
     selectCheckIn.addEventListener('change', function () {
