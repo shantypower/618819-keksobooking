@@ -81,7 +81,9 @@
   };
 
   var closeCurrentPopup = function () {
-    mapCard.remove();
+    if (mapCard) {
+      mapCard.remove();
+    }
     document.removeEventListener('click', onCloseBtnClick);
   };
 

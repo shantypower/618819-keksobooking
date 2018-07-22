@@ -65,8 +65,10 @@
   photoDropZone.addEventListener('drop', function (event) {
     showPhoto(event.dataTransfer, renderPreview);
   });
+
   fileChooserApartment.addEventListener('change', function () {
     showPhoto(fileChooserApartment, renderPreview);
+    photoBoxTemplate.style.display = 'none';
   });
 
 
