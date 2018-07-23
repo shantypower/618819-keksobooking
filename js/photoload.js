@@ -13,12 +13,15 @@
   var photoDropZone = document.querySelector('.ad-form__drop-zone');
 
   var showPhoto = function (inputFile, callback) {
-    var file = inputFile.files[0];
-    var fileName = file.name.toLowerCase();
+    window.resetPhotos();
 
-    var matches = FILE_TYPES.some(function (element) {
-      return fileName.endsWith(element);
-    });
+    Array.from(inputFile.files).forEach(function (it) {
+      var file = it;
+      var fileName = file.name.toLowerCase();
+
+      var matches = FILE_TYPES.some(function (element) {
+        return fileName.endsWith(element);
+      });
 
     if (matches) {
       var reader = new FileReader();
@@ -27,7 +30,8 @@
       });
       reader.readAsDataURL(file);
     }
-  };
+  });
+};
 
   var setAvatarLink = function (link) {
     preview.src = link;
@@ -43,11 +47,11 @@
 
 
   DRUG_DROP_EVENTS.forEach(function (eventName) {
-    avatarDropZone.addEventListener(eventName, preventDefaults, false);
+    avatarDropZone.addEventListener(eventName, function (evt) { preventDefaults(evt)}, false);
   });
 
   DRUG_DROP_EVENTS.forEach(function (eventName) {
-    photoDropZone.addEventListener(eventName, preventDefaults, false);
+    photoDropZone.addEventListener(eventName, function (evt) { preventDefaults(evt)}, false);
   });
 
   var preventDefaults = function (event) {
@@ -63,7 +67,7 @@
   });
 
   photoDropZone.addEventListener('drop', function (event) {
-    showPhoto(event.dataTransfer, renderPreview);
+    fileChooserApartment.files = evt.dataTransfer.files;
   });
 
   fileChooserApartment.addEventListener('change', function () {
