@@ -143,8 +143,8 @@
     window.map.mapPinMain.style.left = MAIN_PIN_START_X + 'px';
     window.map.mapPinMain.style.top = MAIN_PIN_START_Y + 'px';
     window.map.getPinAddressToForm();
-    window.resetAvatar();
-    window.resetPhotos();
+    window.photoload.resetAvatar();
+    window.photoload.resetPhotos();
   };
 
   var initiateValidation = function () {

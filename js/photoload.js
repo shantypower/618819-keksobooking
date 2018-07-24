@@ -13,8 +13,6 @@
   var photoDropZone = document.querySelector('.ad-form__drop-zone');
 
   var showPhoto = function (inputFile, callback) {
-    window.resetPhotos();
-
     Array.from(inputFile.files).forEach(function (it) {
       var file = it;
       var fileName = file.name.toLowerCase();
@@ -23,15 +21,15 @@
         return fileName.endsWith(element);
       });
 
-    if (matches) {
-      var reader = new FileReader();
-      reader.addEventListener('load', function () {
-        callback(reader.result);
-      });
-      reader.readAsDataURL(file);
-    }
-  });
-};
+      if (matches) {
+        var reader = new FileReader();
+        reader.addEventListener('load', function () {
+          callback(reader.result);
+        });
+        reader.readAsDataURL(file);
+      }
+    });
+  };
 
   var setAvatarLink = function (link) {
     preview.src = link;
@@ -47,11 +45,15 @@
 
 
   DRUG_DROP_EVENTS.forEach(function (eventName) {
-    avatarDropZone.addEventListener(eventName, function (evt) { preventDefaults(evt)}, false);
+    avatarDropZone.addEventListener(eventName, function (evt) {
+      preventDefaults(evt);
+    }, false);
   });
 
   DRUG_DROP_EVENTS.forEach(function (eventName) {
-    photoDropZone.addEventListener(eventName, function (evt) { preventDefaults(evt)}, false);
+    photoDropZone.addEventListener(eventName, function (evt) {
+      preventDefaults(evt);
+    }, false);
   });
 
   var preventDefaults = function (event) {
@@ -62,25 +64,37 @@
   avatarDropZone.addEventListener('drop', function (event) {
     showPhoto(event.dataTransfer, setAvatarLink);
   });
+
   fileChooser.addEventListener('change', function () {
+    window.resetAvatar();
     showPhoto(fileChooser, setAvatarLink);
   });
 
   photoDropZone.addEventListener('drop', function (event) {
-    fileChooserApartment.files = evt.dataTransfer.files;
+    fileChooserApartment.files = event.dataTransfer.files;
   });
 
   fileChooserApartment.addEventListener('change', function () {
+    window.resetPhotos();
     showPhoto(fileChooserApartment, renderPreview);
     photoBoxTemplate.style.display = 'none';
   });
 
-
-  window.resetPhotos = function () {
+  var resetPhotos = function () {
     while (photoContainer.lastChild.tagName === 'DIV') {
       photoContainer.removeChild(photoContainer.lastChild);
     }
     photoBoxTemplate.style.display = 'block';
+  };
+
+  var resetAvatar = function () {
+    var defaultSrc = 'img/muffin-grey.svg';
+    preview.src = defaultSrc;
+  };
+
+  window.photoload = {
+    resetAvatar: resetAvatar,
+    resetPhotos: resetPhotos
   };
 
 })();
