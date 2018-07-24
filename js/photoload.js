@@ -66,7 +66,7 @@
   });
 
   fileChooser.addEventListener('change', function () {
-    window.resetAvatar();
+    resetAvatar();
     showPhoto(fileChooser, setAvatarLink);
   });
 
@@ -75,7 +75,7 @@
   });
 
   fileChooserApartment.addEventListener('change', function () {
-    window.resetPhotos();
+    resetPhotos();
     showPhoto(fileChooserApartment, renderPreview);
     photoBoxTemplate.style.display = 'none';
   });
