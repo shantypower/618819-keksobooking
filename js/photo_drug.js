@@ -4,17 +4,16 @@
   var photoContainer = document.querySelector('.ad-form__photo-container');
   var moveElement;
 
-  var isPhotoMoved = function (element) {
-    var rect = element.getBoundingClientRect();
-    return (element.clientX - rect.left) / (rect.right - rect.left) > 0.5;
-  };
-
   var onDragOver = function (evt) {
     evt.preventDefault();
     var target = evt.target;
     var element = target.closest('.ad-form__photo');
     if (element) {
-      photoContainer.insertBefore(moveElement, (isPhotoMoved(element) && element.nextSibling) || element);
+      if (photoContainer.lastElementChild === element) {
+        photoContainer.appendChild(moveElement);
+      } else {
+        photoContainer.insertBefore(moveElement, element);
+      }
     }
   };
 
